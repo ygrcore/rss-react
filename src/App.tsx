@@ -1,37 +1,45 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '../public/vite.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import PokeApi from './services/PokeApi';
+
+interface PokemonData {
+  name: string;
+  image: string;
+  // add more
+}
+
+const pokemon = new PokeApi();
+
+const getData = async () => {
+  const data = await pokemon.getAllPokemons();
+  console.log('Here is some data', data);
+};
+
+getData();
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [pokemons, setPokemons] = useState<PokemonData[]>([]);
+
+  useEffect(() => {
+    async function fetchPokemons() {
+      const pokemonList = await pokemon.getAllPokemons();
+      if (pokemonList) setPokemons(pokemonList);
+    }
+    fetchPokemons();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <h1>List of 10 Pokemons</h1>
+      <div className="pokemon-list">
+        {pokemons.map((pokemon, index) => (
+          <div key={index} className="pokemon-card">
+            <img src={pokemon.image} alt={pokemon.name} />
+            <h2>{pokemon.name}</h2>
+            {/* add more info */}
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          type="button"
-          onClick={() => setCount((prevCount) => prevCount + 1)}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
