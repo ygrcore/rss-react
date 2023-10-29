@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import PokeApi from '../../services/PokeApi';
 
 const pokemon = new PokeApi();
-console.log(pokemon.getPokemonsNames());
 
 function PokeSearchForm() {
   const items = localStorage.getItem('searchedPokes');
@@ -22,7 +21,6 @@ function PokeSearchForm() {
 
   const getPokemons = async () => {
     const response = await pokemon.getPokemonsNames();
-    console.log(response);
     setPokemons(response);
     localStorage.setItem('response', JSON.stringify(response));
   }
