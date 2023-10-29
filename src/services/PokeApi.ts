@@ -1,15 +1,15 @@
 export interface PokemonData {
   name: string;
-  image: string;
+  image?: string;
   // add more
 }
 
-interface PokemonResult {
+export interface PokemonResult {
   name: string;
   url: string;
 }
 
-interface PokemonResponse {
+export interface PokemonResponse {
   name: string;
   sprites: {
     front_default: string;
@@ -18,7 +18,7 @@ interface PokemonResponse {
   // add more
 }
 
-interface PokemonResource {
+export interface PokemonResource {
   count?: number;
   next?: string;
   previous?: string;
@@ -27,6 +27,7 @@ interface PokemonResource {
 
 class PokeApi {
   _apiBase = 'https://pokeapi.co/api/v2/';
+  _baseLimit = 10;
   _baseOffset = 10;
 
   getResource = async <T>(url: string): Promise<T> => {
@@ -40,10 +41,11 @@ class PokeApi {
   };
 
   getAllPokemons = async (
+    limit = this._baseLimit,
     offset = this._baseOffset
   ): Promise<PokemonData[]> => {
     const res = await this.getResource<PokemonResource>(
-      `${this._apiBase}pokemon?limit=10&offset=${offset}`
+      `${this._apiBase}pokemon?limit=${limit}&offset=${offset}`
     );
     // return res.results.map(this._transformData);
     const results = res.results;

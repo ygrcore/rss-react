@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import PokeApi from './services/PokeApi';
+import PokeSearchForm from './components/PokeSearchForm/PokeSearchForm';
 
 interface PokemonData {
   name: string;
-  image: string;
+  image?: string;
   // add more
 }
 
@@ -29,6 +30,7 @@ function App() {
 
   return (
     <div>
+      <PokeSearchForm />
       <h1>List of 10 Pokemons</h1>
       <div className="pokemon-list">
         {pokemons.map((pokemon, index) => (
