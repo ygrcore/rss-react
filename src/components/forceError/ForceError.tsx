@@ -4,12 +4,12 @@ class ForceError extends Component {
   forceError = () => {
     try {
       localStorage.setItem('searchedPokes', 'error');
-      throw new Error("This is a simulated error");
+      throw new Error('This is a simulated error');
     } catch (err) {
       console.log('An error occurred');
       window.location.reload();
     }
-  }
+  };
 
   repairError = () => {
     try {
@@ -19,7 +19,7 @@ class ForceError extends Component {
       console.log('An error occurred after repair');
       window.location.reload();
     }
-  }
+  };
 
   render() {
     return (

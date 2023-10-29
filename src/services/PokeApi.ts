@@ -63,14 +63,16 @@ class PokeApi {
   };
 
   getPokemonsNames = async (): Promise<string[]> => {
-    const res = await this.getResource<PokemonResource>(`${this._apiBase}pokemon?limit=100000&offset=0`);
+    const res = await this.getResource<PokemonResource>(
+      `${this._apiBase}pokemon?limit=100000&offset=0`
+    );
     const results = res.results;
     if (Array.isArray(results)) {
       const names = results.map((poke) => poke.name);
       return names;
     }
     return [];
-  }
+  };
 
   getPokemon = async (id: number | string): Promise<PokemonData> => {
     const res = await this.getResource<PokemonResponse>(
