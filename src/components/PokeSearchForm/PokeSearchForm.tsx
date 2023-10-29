@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
-import PokeApi, { PokemonData } from '../../services/PokeApi';
+import PokeApi from '../../services/PokeApi';
 
 const pokemon = new PokeApi();
+console.log(pokemon.getPokemonsNames());
 
 function PokeSearchForm() {
   const items = localStorage.getItem('searchedPokes');
-  const allItems = localStorage.getItem('response');
   const [searchTerm, setSearchTerm] = useState(localStorage.getItem('term') || '');
-  const [pokemons, setPokemons] = useState<PokemonData[]>(allItems? [...JSON.parse(allItems)] : []);
-  const [searchResults, setSearchResults] = useState<PokemonData[]>(items ? JSON.parse(items) : []);
+  const [pokemons, setPokemons] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<string[]>(items ? JSON.parse(items) : []);
   const [error, setError] = useState('');
 
 
   useEffect(() => {
-    if (localStorage.getItem('term')) {
-      return;
-    } else {
+    // if (localStorage.getItem('searchedPokes')) {
+    //   return;
+    // } else {
       getPokemons();
-    }
+    // }
   }, []);
 
   const getPokemons = async () => {
-    const response = await pokemon.getAllPokemons(1292, 0);
+    const response = await pokemon.getPokemonsNames();
+    console.log(response);
     setPokemons(response);
     localStorage.setItem('response', JSON.stringify(response));
   }
@@ -34,7 +35,7 @@ function PokeSearchForm() {
     try {
       const searchTermRegex = new RegExp(searchTerm, 'i');
       localStorage.setItem('term', searchTerm)
-      const searchResults = pokemons.filter((pokemon) => searchTermRegex.test(pokemon.name));
+      const searchResults = pokemons.filter((pokemon) => searchTermRegex.test(pokemon));
       setSearchResults(searchResults);
       localStorage.setItem('searchedPokes', JSON.stringify(searchResults));
       setError('');
@@ -56,14 +57,12 @@ function PokeSearchForm() {
       {error && <p>{error}</p>}
       <ul>
         {searchResults.length ? searchResults.map((pokemon) => (
-          <li key={pokemon.name}>
-            {pokemon.name}
-            {searchResults.length <= 1 ?  <img src={pokemon.image} alt={pokemon.name} /> : null}
+          <li key={pokemon}>
+            {pokemon}
           </li>
         )) : pokemons.map((pokemon) => (
-          <li key={pokemon.name}>
-            {pokemon.name}
-            {pokemons.length <= 1 ?  <img src={pokemon.image} alt={pokemon.name} /> : null}
+          <li key={pokemon}>
+            {pokemon}
           </li>))}
       </ul>
     </div>

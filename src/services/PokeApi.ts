@@ -47,14 +47,12 @@ class PokeApi {
     const res = await this.getResource<PokemonResource>(
       `${this._apiBase}pokemon?limit=${limit}&offset=${offset}`
     );
-    // return res.results.map(this._transformData);
     const results = res.results;
     if (Array.isArray(results)) {
       const pokemonData = await Promise.all(
         results.map(async (result: PokemonResult) => {
           const pokemonResponse = await fetch(result.url);
           const pokemon: PokemonResponse = await pokemonResponse.json();
-          // console.log(pokemon);
           return this._transformData(pokemon);
         })
       );
@@ -63,6 +61,16 @@ class PokeApi {
       throw new Error();
     }
   };
+
+  getPokemonsNames = async (): Promise<string[]> => {
+    const res = await this.getResource<PokemonResource>(`${this._apiBase}pokemon?limit=100000&offset=0`);
+    const results = res.results;
+    if (Array.isArray(results)) {
+      const names = results.map((poke) => poke.name);
+      return names;
+    }
+    return [];
+  }
 
   getPokemon = async (id: number | string): Promise<PokemonData> => {
     const res = await this.getResource<PokemonResponse>(
