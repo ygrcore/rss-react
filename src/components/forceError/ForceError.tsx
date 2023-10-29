@@ -1,6 +1,7 @@
-const ForceError = () => {
+import { Component } from 'react';
 
-  const forceError = async () => {
+class ForceError extends Component {
+  forceError = () => {
     try {
       localStorage.setItem('searchedPokes', 'error');
       throw new Error("This is a simulated error");
@@ -10,7 +11,7 @@ const ForceError = () => {
     }
   }
 
-  const repairError = async () => {
+  repairError = () => {
     try {
       localStorage.setItem('searchedPokes', '');
       window.location.reload();
@@ -20,12 +21,14 @@ const ForceError = () => {
     }
   }
 
-  return (
-    <div>
-      <button onClick={repairError}>Repair Error</button>
-      <button onClick={forceError}>Force Error</button>
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <button onClick={this.repairError}>Repair Error</button>
+        <button onClick={this.forceError}>Force Error</button>
+      </div>
+    );
+  }
 }
 
 export default ForceError;
