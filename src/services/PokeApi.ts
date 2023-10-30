@@ -31,7 +31,7 @@ class PokeApi {
   _baseOffset = 10;
 
   getResource = async <T>(url: string): Promise<T> => {
-    let res = await fetch(url);
+    const res = await fetch(url);
 
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status: ${res.status}`);
@@ -63,14 +63,16 @@ class PokeApi {
   };
 
   getPokemonsNames = async (): Promise<string[]> => {
-    const res = await this.getResource<PokemonResource>(`${this._apiBase}pokemon?limit=100000&offset=0`);
+    const res = await this.getResource<PokemonResource>(
+      `${this._apiBase}pokemon?limit=100000&offset=0`
+    );
     const results = res.results;
     if (Array.isArray(results)) {
       const names = results.map((poke) => poke.name);
       return names;
     }
     return [];
-  }
+  };
 
   getPokemon = async (id: number | string): Promise<PokemonData> => {
     const res = await this.getResource<PokemonResponse>(

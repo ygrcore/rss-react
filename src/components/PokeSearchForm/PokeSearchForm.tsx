@@ -12,7 +12,10 @@ interface PokeSearchFormState {
   error: string;
 }
 
-class PokeSearchForm extends Component<PokeSearchFormProps, PokeSearchFormState> {
+class PokeSearchForm extends Component<
+  PokeSearchFormProps,
+  PokeSearchFormState
+> {
   constructor(props: PokeSearchFormProps) {
     super(props);
     const items = localStorage.getItem('searchedPokes');
@@ -34,18 +37,20 @@ class PokeSearchForm extends Component<PokeSearchFormProps, PokeSearchFormState>
       pokemons: response,
     });
     localStorage.setItem('response', JSON.stringify(response));
-  }
+  };
 
   handleSearch = () => {
     this.searchForPokes();
-  }
+  };
 
   searchForPokes = () => {
     try {
       const { searchTerm, pokemons } = this.state;
       const searchTermRegex = new RegExp(searchTerm, 'i');
       localStorage.setItem('term', searchTerm);
-      const searchResults = pokemons.filter((pokemon) => searchTermRegex.test(pokemon));
+      const searchResults = pokemons.filter((pokemon) =>
+        searchTermRegex.test(pokemon)
+      );
       this.setState({
         searchResults,
         error: '',
@@ -57,7 +62,7 @@ class PokeSearchForm extends Component<PokeSearchFormProps, PokeSearchFormState>
         error: 'No results found or an error occurred.',
       });
     }
-  }
+  };
 
   render() {
     const { searchTerm, searchResults, error, pokemons } = this.state;
@@ -73,15 +78,9 @@ class PokeSearchForm extends Component<PokeSearchFormProps, PokeSearchFormState>
         <button onClick={this.handleSearch}>Search</button>
         {error && <p>{error}</p>}
         <ul>
-          {searchResults.length ? searchResults.map((pokemon) => (
-            <li key={pokemon}>
-              {pokemon}
-            </li>
-          )) : pokemons.map((pokemon) => (
-            <li key={pokemon}>
-              {pokemon}
-            </li>
-          ))}
+          {searchResults.length
+            ? searchResults.map((pokemon) => <li key={pokemon}>{pokemon}</li>)
+            : pokemons.map((pokemon) => <li key={pokemon}>{pokemon}</li>)}
         </ul>
       </div>
     );
@@ -89,6 +88,3 @@ class PokeSearchForm extends Component<PokeSearchFormProps, PokeSearchFormState>
 }
 
 export default PokeSearchForm;
-
-
-
