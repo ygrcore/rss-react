@@ -1,90 +1,66 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import PokeApi from '../../services/PokeApi';
 
-const pokemon = new PokeApi();
+function PokeSearchForm() {
+  const { getPokemonsNames } = PokeApi();
 
-interface PokeSearchFormProps {}
+  const items = localStorage.getItem('searchedPokes');
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem('term') || ''
+  );
+  const [pokemons, setPokemons] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<string[]>(
+    items ? JSON.parse(items) : []
+  );
+  const [error, setError] = useState('');
 
-interface PokeSearchFormState {
-  searchTerm: string;
-  pokemons: string[];
-  searchResults: string[];
-  error: string;
-}
+  useEffect(() => {
+    getPokemons();
+  }, []);
 
-class PokeSearchForm extends Component<
-  PokeSearchFormProps,
-  PokeSearchFormState
-> {
-  constructor(props: PokeSearchFormProps) {
-    super(props);
-    const items = localStorage.getItem('searchedPokes');
-    this.state = {
-      searchTerm: localStorage.getItem('term') || '',
-      pokemons: [],
-      searchResults: items ? JSON.parse(items) : [],
-      error: '',
-    };
-  }
-
-  componentDidMount() {
-    this.getPokemons();
-  }
-
-  getPokemons = async () => {
-    const response = await pokemon.getPokemonsNames();
-    this.setState({
-      pokemons: response,
-    });
+  const getPokemons = async () => {
+    const response = await getPokemonsNames();
+    setPokemons(response);
     localStorage.setItem('response', JSON.stringify(response));
   };
 
-  handleSearch = () => {
-    this.searchForPokes();
+  const handleSearch = async () => {
+    searchForPokes();
   };
 
-  searchForPokes = () => {
+  const searchForPokes = () => {
     try {
-      const { searchTerm, pokemons } = this.state;
       const searchTermRegex = new RegExp(searchTerm, 'i');
       localStorage.setItem('term', searchTerm);
       const searchResults = pokemons.filter((pokemon) =>
         searchTermRegex.test(pokemon)
       );
-      this.setState({
-        searchResults,
-        error: '',
-      });
+      setSearchResults(searchResults);
       localStorage.setItem('searchedPokes', JSON.stringify(searchResults));
+      setError('');
     } catch (err) {
-      this.setState({
-        searchResults: [],
-        error: 'No results found or an error occurred.',
-      });
+      setSearchResults([]);
+      setError('No results found or an error occurred.');
     }
   };
 
-  render() {
-    const { searchTerm, searchResults, error, pokemons } = this.state;
-
-    return (
-      <div>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => this.setState({ searchTerm: e.target.value })}
-          placeholder="Search for a Pokémon"
-        />
-        <button onClick={this.handleSearch}>Search</button>
-        {error && <p>{error}</p>}
-        <ul>
-          {searchResults.length
-            ? searchResults.map((pokemon) => <li key={pokemon}>{pokemon}</li>)
-            : pokemons.map((pokemon) => <li key={pokemon}>{pokemon}</li>)}
-        </ul>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search for a Pokémon"
+      />
+      <button onClick={handleSearch}>Search</button>
+      {error && <p>{error}</p>}
+      <ul>
+        {searchResults.length
+          ? searchResults.map((pokemon) => <li key={pokemon}>{pokemon}</li>)
+          : pokemons.map((pokemon) => <li key={pokemon}>{pokemon}</li>)}
+      </ul>
+    </div>
+  );
 }
 
 export default PokeSearchForm;
