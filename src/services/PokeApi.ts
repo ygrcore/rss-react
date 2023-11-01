@@ -1,29 +1,4 @@
-export interface PokemonData {
-  name: string;
-  image?: string;
-  // add more
-}
-
-export interface PokemonResult {
-  name: string;
-  url: string;
-}
-
-export interface PokemonResponse {
-  name: string;
-  sprites: {
-    front_default: string;
-    // add more
-  };
-  // add more
-}
-
-export interface PokemonResource {
-  count?: number;
-  next?: string;
-  previous?: string;
-  results: PokemonResult | PokemonResult[];
-}
+import { PokemonData, PokemonResource, PokemonResponse } from "../types/types";
 
 const PokeApi = () => {
   const apiBase = 'https://pokeapi.co/api/v2/';
@@ -80,16 +55,19 @@ const PokeApi = () => {
   };
 
   const transformData = (pokemon: PokemonResponse) => {
+    const types = pokemon.types?.map((type) => type.type.name).join(', ');
     return {
       name: pokemon.name,
       image: pokemon.sprites.front_default,
+      type: types,
+      id: pokemon.id
     };
   };
 
   return {
     getAllPokemons,
     getPokemonsNames,
-    getPokemon,
+    getPokemon
   };
 };
 
