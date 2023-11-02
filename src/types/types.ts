@@ -20,7 +20,7 @@ export interface PokemonResponse {
     type: {
       name: string;
       // url?: string;
-    }
+    };
   }[];
   id?: string;
 }

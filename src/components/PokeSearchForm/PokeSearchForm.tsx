@@ -9,7 +9,9 @@ const PokeSearchForm: React.FC = () => {
   const [searchResults, setSearchResults] = useState<PokemonData[]>(
     items ? JSON.parse(items) : []
   );
-  const [searchTerm, setSearchTerm] = useState<string>(localStorage.getItem('term') || '');
+  const [searchTerm, setSearchTerm] = useState<string>(
+    localStorage.getItem('term') || ''
+  );
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -29,8 +31,10 @@ const PokeSearchForm: React.FC = () => {
     try {
       const searchTermRegex = new RegExp(searchTerm, 'i');
       localStorage.setItem('term', searchTerm);
-      const searchResults = pokemonList.filter((pokemon) =>
-        searchTermRegex.test(pokemon.name) || searchTerm === String(pokemon.id)
+      const searchResults = pokemonList.filter(
+        (pokemon) =>
+          searchTermRegex.test(pokemon.name) ||
+          searchTerm === String(pokemon.id)
       );
       setSearchResults(searchResults);
       localStorage.setItem('searchedPokes', JSON.stringify(searchResults));
@@ -80,4 +84,3 @@ const PokeSearchForm: React.FC = () => {
 };
 
 export default PokeSearchForm;
-

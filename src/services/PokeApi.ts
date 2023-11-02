@@ -1,4 +1,4 @@
-import { PokemonData, PokemonResource, PokemonResponse } from "../types/types";
+import { PokemonData, PokemonResource, PokemonResponse } from '../types/types';
 
 const PokeApi = () => {
   const apiBase = 'https://pokeapi.co/api/v2/';
@@ -60,14 +60,14 @@ const PokeApi = () => {
       name: pokemon.name,
       image: pokemon.sprites.front_default,
       type: types,
-      id: pokemon.id
+      id: pokemon.id,
     };
   };
 
   return {
     getAllPokemons,
     getPokemonsNames,
-    getPokemon
+    getPokemon,
   };
 };
 
