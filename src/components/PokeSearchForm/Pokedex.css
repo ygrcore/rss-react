@@ -1,0 +1,18 @@
+#pokedex {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Создать 5 столбцов */
+  gap: 2%;
+  margin-bottom: 5em;
+  @media screen and (max-width: 800px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 490px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  padding: 2%;
+  margin: 2%;
+  list-style-type: none;
+}

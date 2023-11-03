@@ -7,6 +7,7 @@ const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
 
   const handleSearch = () => {
     onSearch(searchTerm);
+    localStorage.setItem('currentPage', '1');
   };
 
   return (
