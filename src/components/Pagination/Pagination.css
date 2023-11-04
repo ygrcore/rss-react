@@ -10,6 +10,16 @@
   display: flex;
   justify-content: center;
   width: 45px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.4em;
+  color: inherit;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
 
 .button-active {
