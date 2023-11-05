@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { PokemonData } from '../../types/types';
+import { stopPropagation } from '../../utils/eventHandler/stopPropaganation';
 
 import './PokemonList.css';
 
@@ -21,6 +22,34 @@ const PokemonList: React.FC<PokemonListProps> = ({
   const endIndex = startIndex + itemsPerPage;
   const displayedResults = searchResults.slice(startIndex, endIndex);
 
+  const [outletVisible, setOutletVisible] = useState(true);
+
+  useEffect(() => {
+    document.addEventListener('click', closeHandle);
+
+    return () => {
+      document.removeEventListener('click', closeHandle);
+    };
+  }, []);
+
+  const closeHandle: EventListener = (event): void => {
+    const element = event.target as HTMLElement;
+    if (
+      element &&
+      !(
+        element.classList.contains('pokemons__outlet') ||
+        element.classList.contains('card') ||
+        element.classList.contains('card-image') ||
+        element.classList.contains('card-title') ||
+        element.classList.contains('card-subtitle')
+      )
+    ) {
+      setOutletVisible(false);
+    } else {
+      setOutletVisible(true);
+    }
+  };
+
   return (
     <div className="pokemons">
       <div className="pokemons__list">
@@ -36,7 +65,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
               }}
             >
               {/* <Link to={`/${pokemon.name}`}> */}
-              <Link to={`${pokemon.name}?page=${currentPage}`}>
+              <Link to={`${pokemon.name}?page=${currentPage}` }>
                 <img
                   className="card-image"
                   src={pokemon.image}
@@ -50,7 +79,11 @@ const PokemonList: React.FC<PokemonListProps> = ({
         </ul>
       </div>
       {/* <hr /> */}
-      <div className="pokemons__outlet">
+      <div
+        className="pokemons__outlet"
+        onClick={stopPropagation}
+        style={{ display: outletVisible ? 'block' : 'none' }}
+      >
         <Outlet />
       </div>
     </div>

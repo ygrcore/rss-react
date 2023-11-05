@@ -5,3 +5,11 @@
 .pokemons__list {
   width: 100%;
 }
+
+.pokemons__outlet {
+  max-height: 470px;
+  text-align: center;
+  margin: 1em 0.3em;
+  padding: 1em;
+  border-radius: 8px;
+}
