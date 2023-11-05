@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Pagination.css';
+import { useSearchParams } from 'react-router-dom';
 
 type PaginationProps = {
   totalPages: number;
@@ -19,9 +20,10 @@ const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
 }) => {
+  let [searchParams, setSearchParams] = useSearchParams('page=1');
   let query = useQuery();
+  console.log(searchParams);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-  // console.log(typeof totalPages);
 
   return (
     <>
@@ -42,7 +44,7 @@ const Pagination: React.FC<PaginationProps> = ({
         ))}
       </div>
       <Child
-        page={query.get('page') || ''}
+        page={searchParams.get('page') || query.get('page') || ''}
         totalPages={totalPages}
         onPageChange={onPageChange}
       />

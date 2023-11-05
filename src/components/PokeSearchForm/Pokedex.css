@@ -28,6 +28,15 @@
   cursor: pointer;
 }
 
+.card a {
+  text-align: center;
+  color: inherit;
+  transition: color 0.3s;
+}
+.card a:hover {
+  color: blue;
+}
+
 .card-title {
   text-transform: capitalize;
 }

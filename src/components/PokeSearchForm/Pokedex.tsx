@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import PokeApi from '../../services/PokeApi';
 import { PokemonData } from '../../types/types';
+import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
 import Pagination from '../Pagination/Pagination';
@@ -47,7 +49,6 @@ const Pokedex: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     localStorage.setItem('currentPage', page.toString());
-    // API-запрос если надо
   };
 
   return (
@@ -58,11 +59,20 @@ const Pokedex: React.FC = () => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-      <PokemonList
-        searchResults={searchResults}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-      />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PokemonList
+              searchResults={searchResults}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+            />
+          }
+        >
+          <Route path=":pokemonName" element={<PokemonDetails />} />
+        </Route>
+      </Routes>
     </div>
   );
 };

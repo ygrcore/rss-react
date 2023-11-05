@@ -1,0 +1,7 @@
+.pokemons {
+  display: flex;
+}
+
+.pokemons__list {
+  width: 100%;
+}
