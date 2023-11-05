@@ -65,7 +65,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
               }}
             >
               {/* <Link to={`/${pokemon.name}`}> */}
-              <Link to={`${pokemon.name}?page=${currentPage}` }>
+              <Link to={`${pokemon.name}?page=${currentPage}`}>
                 <img
                   className="card-image"
                   src={pokemon.image}
@@ -82,7 +82,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
       <div
         className="pokemons__outlet"
         onClick={stopPropagation}
-        style={{ display: outletVisible ? 'block' : 'none' }}
+        style={{ display: outletVisible ? 'flex' : 'none' }}
       >
         <Outlet />
       </div>

@@ -10,7 +10,7 @@
   @media screen and (max-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 450px) {
     grid-template-columns: repeat(1, 1fr);
   }
 }
@@ -22,7 +22,9 @@
   list-style-type: none;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   border-radius: 8px;
   background-color: palegreen;
   cursor: pointer;
