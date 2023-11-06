@@ -1,26 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { PokemonData } from '../../types/types';
+import { PokemonData, PokemonResult } from '../../types/types';
 import { stopPropagation } from '../../utils/eventHandler/stopPropaganation';
+import Spinner from '../spinner/Spinner';
+import PokeApi from '../../services/PokeApi';
 
 import './PokemonList.css';
 
 type PokemonListProps = {
-  searchResults: PokemonData[];
+  pokemonList: PokemonResult[];
+  searchResults: PokemonResult[];
   currentPage: number;
   itemsPerPage: number;
 };
 
-// По сути это компонент Layout, тут создаются основные Links
-
 const PokemonList: React.FC<PokemonListProps> = ({
+  pokemonList,
   searchResults,
   currentPage,
   itemsPerPage,
 }) => {
+  const { getUrlsFromPreloadedPokes } = PokeApi();
+  const [pokemonPerPage, setPokemonPerPage] = useState<PokemonData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedResults = searchResults.slice(startIndex, endIndex);
+  const displayedResults = searchResults.length
+    ? searchResults.slice(startIndex, endIndex)
+    : pokemonList.slice(startIndex, endIndex);
+
+  console.log(displayedResults);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchPokes();
+  }, [currentPage, pokemonList, searchResults]);
+
+  const fetchPokes = async () => {
+    const pokemonData = await getUrlsFromPreloadedPokes(displayedResults);
+    setPokemonPerPage(pokemonData);
+    setIsLoading(false);
+  };
 
   const [outletVisible, setOutletVisible] = useState(true);
 
@@ -53,32 +73,43 @@ const PokemonList: React.FC<PokemonListProps> = ({
   return (
     <div className="pokemons">
       <div className="pokemons__list">
-        <ul id="pokedex">
-          {displayedResults.map((pokemon) => (
-            <li
-              key={pokemon.id}
-              className="card"
-              style={{
-                backgroundColor: pokemon.type
-                  ? getColorForType(pokemon.type)
-                  : 'gray',
-              }}
-            >
-              {/* <Link to={`/${pokemon.name}`}> */}
-              <Link to={`${pokemon.name}?page=${currentPage}`}>
-                <img
-                  className="card-image"
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                />
-                <h2 className="card-title">{pokemon.name}</h2>
-                <p className="card-subtitle">Type: {pokemon.type}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {isLoading ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '500px',
+            }}
+          >
+            <Spinner />
+          </div>
+        ) : (
+          <ul id="pokedex">
+            {pokemonPerPage.map((pokemon) => (
+              <li
+                key={pokemon.id}
+                className="card"
+                style={{
+                  backgroundColor: pokemon.type
+                    ? getColorForType(pokemon.type)
+                    : 'gray',
+                }}
+              >
+                <Link to={`${pokemon.name}?page=${currentPage}`}>
+                  <img
+                    className="card-image"
+                    src={pokemon.image}
+                    alt={pokemon.name}
+                  />
+                  <h2 className="card-title">{pokemon.name}</h2>
+                  <p className="card-subtitle">Type: {pokemon.type}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      {/* <hr /> */}
       <div
         className="pokemons__outlet"
         onClick={stopPropagation}

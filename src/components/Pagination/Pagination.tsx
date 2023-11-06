@@ -20,9 +20,8 @@ const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
 }) => {
-  let [searchParams, setSearchParams] = useSearchParams('page=1');
-  let query = useQuery();
-  console.log(searchParams);
+  const [searchParams] = useSearchParams('page=1');
+  const query = useQuery();
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (

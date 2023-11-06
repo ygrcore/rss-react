@@ -1,10 +1,12 @@
-import { useState } from 'react';
-
-const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
-  const [searchTerm, setSearchTerm] = useState<string>(
-    localStorage.getItem('term') || ''
-  );
-
+const SearchBar = ({
+  onSearch,
+  searchTerm,
+  setSearchTerm,
+}: {
+  onSearch: (term: string) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+}) => {
   const handleSearch = () => {
     onSearch(searchTerm);
     localStorage.setItem('currentPage', '1');

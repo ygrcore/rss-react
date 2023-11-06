@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PokeApi from '../../services/PokeApi';
-import { PokemonData } from '../../types/types';
+import { PokemonResult } from '../../types/types';
 import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import SearchBar from './SearchBar';
 import PokemonList from './PokemonList';
@@ -10,12 +10,12 @@ import Pagination from '../Pagination/Pagination';
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  const itemsPerPage = 10;
-  const { getAllPokemons } = PokeApi();
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const { getPreloadedPokemons } = PokeApi();
   const items = localStorage.getItem('searchedPokes');
   const currPage = localStorage.getItem('currentPage');
-  const [pokemonList, setPokemonList] = useState<PokemonData[]>([]);
-  const [searchResults, setSearchResults] = useState<PokemonData[]>(
+  const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
+  const [searchResults, setSearchResults] = useState<PokemonResult[]>(
     items ? JSON.parse(items) : []
   );
   const [searchTerm, setSearchTerm] = useState(
@@ -25,10 +25,10 @@ const Pokedex: React.FC = () => {
 
   useEffect(() => {
     fetchPokemon();
-  }, []);
+  }, [itemsPerPage]);
 
   const fetchPokemon = async () => {
-    const pokemonData = await getAllPokemons(150, 0);
+    const pokemonData = await getPreloadedPokemons(150, 0);
     setPokemonList(pokemonData);
   };
 
@@ -36,9 +36,8 @@ const Pokedex: React.FC = () => {
     setSearchTerm(term);
     const searchTermRegex = new RegExp(term, 'i');
     localStorage.setItem('term', term);
-    const filteredResults = pokemonList.filter(
-      (pokemon) =>
-        searchTermRegex.test(pokemon.name) || term === String(pokemon.id)
+    const filteredResults = pokemonList.filter((pokemon) =>
+      searchTermRegex.test(pokemon.name)
     );
     setSearchResults(filteredResults);
     localStorage.setItem('currentPage', '1');
@@ -51,19 +50,42 @@ const Pokedex: React.FC = () => {
     localStorage.setItem('currentPage', page.toString());
   };
 
+  const handleItemsPerPageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const newItemsPerPage = parseInt(event.target.value, 10);
+    setItemsPerPage(newItemsPerPage);
+  };
+
   return (
     <div>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onSearch={handleSearch}
+      />
       <Pagination
-        totalPages={Math.ceil(searchResults.length / itemsPerPage)}
+        totalPages={Math.ceil(
+          (searchResults.length ? searchResults.length : pokemonList.length) /
+            itemsPerPage
+        )}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
+      <div className="select-amount">
+        <p className="select-title">Amount of pokemons</p>
+        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+          <option value={20}>20</option>
+        </select>
+      </div>
       <Routes>
         <Route
           path="/"
           element={
             <PokemonList
+              pokemonList={pokemonList}
               searchResults={searchResults}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}

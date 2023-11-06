@@ -1,4 +1,9 @@
-import { PokemonData, PokemonResource, PokemonResponse } from '../types/types';
+import {
+  PokemonData,
+  PokemonResource,
+  PokemonResponse,
+  PokemonResult,
+} from '../types/types';
 
 const PokeApi = () => {
   const apiBase = 'https://pokeapi.co/api/v2/';
@@ -26,6 +31,34 @@ const PokeApi = () => {
     if (Array.isArray(results)) {
       const pokemonData = await Promise.all(
         results.map(async (result) => {
+          const pokemonResponse = await fetch(result.url);
+          const pokemon = await pokemonResponse.json();
+          return transformData(pokemon);
+        })
+      );
+      return pokemonData;
+    } else {
+      throw new Error();
+    }
+  };
+
+  const getPreloadedPokemons = async (
+    limit = baseLimit,
+    offset = baseOffset
+  ): Promise<PokemonResult[]> => {
+    const res = await getResource<PokemonResource>(
+      `${apiBase}pokemon?limit=${limit}&offset=${offset}`
+    );
+    const results = res.results;
+    return Array.isArray(results) ? results : [results];
+  };
+
+  const getUrlsFromPreloadedPokes = async (
+    result: PokemonResult[]
+  ): Promise<PokemonData[]> => {
+    if (Array.isArray(result)) {
+      const pokemonData = await Promise.all(
+        result.map(async (result) => {
           const pokemonResponse = await fetch(result.url);
           const pokemon = await pokemonResponse.json();
           return transformData(pokemon);
@@ -68,6 +101,8 @@ const PokeApi = () => {
     getAllPokemons,
     getPokemonsNames,
     getPokemon,
+    getPreloadedPokemons,
+    getUrlsFromPreloadedPokes,
   };
 };
 
