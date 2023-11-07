@@ -87,16 +87,15 @@ const PokemonList: React.FC<PokemonListProps> = ({
         ) : (
           <ul id="pokedex">
             {pokemonPerPage.map((pokemon) => (
-              <li
-                key={pokemon.id}
-                className="card"
-                style={{
-                  backgroundColor: pokemon.type
-                    ? getColorForType(pokemon.type)
-                    : 'gray',
-                }}
-              >
-                <Link to={`${pokemon.name}?page=${currentPage}`}>
+              <Link key={pokemon.id} to={`${pokemon.name}?page=${currentPage}`}>
+                <li
+                  className="card"
+                  style={{
+                    backgroundColor: pokemon.type
+                      ? getColorForType(pokemon.type)
+                      : 'gray',
+                  }}
+                >
                   <img
                     className="card-image"
                     src={pokemon.image}
@@ -104,8 +103,8 @@ const PokemonList: React.FC<PokemonListProps> = ({
                   />
                   <h2 className="card-title">{pokemon.name}</h2>
                   <p className="card-subtitle">Type: {pokemon.type}</p>
-                </Link>
-              </li>
+                </li>
+              </Link>
             ))}
           </ul>
         )}
