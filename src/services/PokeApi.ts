@@ -1,37 +1,17 @@
-export interface PokemonData {
-  name: string;
-  image?: string;
-  // add more
-}
+import {
+  PokemonData,
+  PokemonResource,
+  PokemonResponse,
+  PokemonResult,
+} from '../types/types';
 
-export interface PokemonResult {
-  name: string;
-  url: string;
-}
+const PokeApi = () => {
+  const apiBase = 'https://pokeapi.co/api/v2/';
+  const baseLimit = 10;
+  const baseOffset = 10;
 
-export interface PokemonResponse {
-  name: string;
-  sprites: {
-    front_default: string;
-    // add more
-  };
-  // add more
-}
-
-export interface PokemonResource {
-  count?: number;
-  next?: string;
-  previous?: string;
-  results: PokemonResult | PokemonResult[];
-}
-
-class PokeApi {
-  _apiBase = 'https://pokeapi.co/api/v2/';
-  _baseLimit = 10;
-  _baseOffset = 10;
-
-  getResource = async <T>(url: string): Promise<T> => {
-    let res = await fetch(url);
+  const getResource = async <T>(url: string): Promise<T> => {
+    const res = await fetch(url);
 
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status: ${res.status}`);
@@ -40,20 +20,20 @@ class PokeApi {
     return await res.json();
   };
 
-  getAllPokemons = async (
-    limit = this._baseLimit,
-    offset = this._baseOffset
+  const getAllPokemons = async (
+    limit = baseLimit,
+    offset = baseOffset
   ): Promise<PokemonData[]> => {
-    const res = await this.getResource<PokemonResource>(
-      `${this._apiBase}pokemon?limit=${limit}&offset=${offset}`
+    const res = await getResource<PokemonResource>(
+      `${apiBase}pokemon?limit=${limit}&offset=${offset}`
     );
     const results = res.results;
     if (Array.isArray(results)) {
       const pokemonData = await Promise.all(
-        results.map(async (result: PokemonResult) => {
+        results.map(async (result) => {
           const pokemonResponse = await fetch(result.url);
-          const pokemon: PokemonResponse = await pokemonResponse.json();
-          return this._transformData(pokemon);
+          const pokemon = await pokemonResponse.json();
+          return transformData(pokemon);
         })
       );
       return pokemonData;
@@ -62,29 +42,68 @@ class PokeApi {
     }
   };
 
-  getPokemonsNames = async (): Promise<string[]> => {
-    const res = await this.getResource<PokemonResource>(`${this._apiBase}pokemon?limit=100000&offset=0`);
+  const getPreloadedPokemons = async (
+    limit = baseLimit,
+    offset = baseOffset
+  ): Promise<PokemonResult[]> => {
+    const res = await getResource<PokemonResource>(
+      `${apiBase}pokemon?limit=${limit}&offset=${offset}`
+    );
+    const results = res.results;
+    return Array.isArray(results) ? results : [results];
+  };
+
+  const getUrlsFromPreloadedPokes = async (
+    result: PokemonResult[]
+  ): Promise<PokemonData[]> => {
+    if (Array.isArray(result)) {
+      const pokemonData = await Promise.all(
+        result.map(async (result) => {
+          const pokemonResponse = await fetch(result.url);
+          const pokemon = await pokemonResponse.json();
+          return transformData(pokemon);
+        })
+      );
+      return pokemonData;
+    } else {
+      throw new Error();
+    }
+  };
+
+  const getPokemonsNames = async (): Promise<string[]> => {
+    const res = await getResource<PokemonResource>(
+      `${apiBase}pokemon?limit=100000&offset=0`
+    );
     const results = res.results;
     if (Array.isArray(results)) {
       const names = results.map((poke) => poke.name);
       return names;
     }
     return [];
-  }
-
-  getPokemon = async (id: number | string): Promise<PokemonData> => {
-    const res = await this.getResource<PokemonResponse>(
-      `${this._apiBase}pokemon/${id}`
-    );
-    return this._transformData(res);
   };
 
-  _transformData = (pokemon: PokemonResponse): PokemonData => {
+  const getPokemon = async (id: string): Promise<PokemonData> => {
+    const res = await getResource<PokemonResponse>(`${apiBase}pokemon/${id}`);
+    return transformData(res);
+  };
+
+  const transformData = (pokemon: PokemonResponse) => {
+    const types = pokemon.types?.map((type) => type.type.name).join(', ');
     return {
       name: pokemon.name,
       image: pokemon.sprites.front_default,
+      type: types,
+      id: pokemon.id,
     };
   };
-}
+
+  return {
+    getAllPokemons,
+    getPokemonsNames,
+    getPokemon,
+    getPreloadedPokemons,
+    getUrlsFromPreloadedPokes,
+  };
+};
 
 export default PokeApi;
