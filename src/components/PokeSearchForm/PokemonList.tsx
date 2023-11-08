@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { PokemonData, PokemonResult } from '../../types/types';
 import { stopPropagation } from '../../utils/eventHandler/stopPropaganation';
 import Spinner from '../spinner/Spinner';
 import PokeApi from '../../services/PokeApi';
+import PokemonCard from './PokemonCard';
 
 import './PokemonList.css';
 
@@ -28,8 +29,6 @@ const PokemonList: React.FC<PokemonListProps> = ({
   const displayedResults = searchResults.length
     ? searchResults.slice(startIndex, endIndex)
     : pokemonList.slice(startIndex, endIndex);
-
-  console.log(displayedResults);
 
   useEffect(() => {
     setIsLoading(true);
@@ -87,24 +86,11 @@ const PokemonList: React.FC<PokemonListProps> = ({
         ) : (
           <ul id="pokedex">
             {pokemonPerPage.map((pokemon) => (
-              <Link key={pokemon.id} to={`${pokemon.name}?page=${currentPage}`}>
-                <li
-                  className="card"
-                  style={{
-                    backgroundColor: pokemon.type
-                      ? getColorForType(pokemon.type)
-                      : 'gray',
-                  }}
-                >
-                  <img
-                    className="card-image"
-                    src={pokemon.image}
-                    alt={pokemon.name}
-                  />
-                  <h2 className="card-title">{pokemon.name}</h2>
-                  <p className="card-subtitle">Type: {pokemon.type}</p>
-                </li>
-              </Link>
+              <PokemonCard
+                key={pokemon.id}
+                pokemon={pokemon}
+                currentPage={currentPage}
+              />
             ))}
           </ul>
         )}
@@ -118,47 +104,6 @@ const PokemonList: React.FC<PokemonListProps> = ({
       </div>
     </div>
   );
-};
-
-const getColorForType = (type: string) => {
-  const types = type.split(',');
-  const primaryType = types[0].trim();
-  switch (primaryType) {
-    case 'bug':
-      return 'lightyellow';
-    case 'fire':
-      return 'lightsalmon';
-    case 'grass':
-      return 'lightgreen';
-    case 'water':
-      return 'lightblue';
-    case 'normal':
-      return 'lightgray';
-    case 'poison':
-      return 'lightseagreen';
-    case 'electric':
-      return 'yellow';
-    case 'ground':
-      return 'sandybrown';
-    case 'fairy':
-      return 'pink';
-    case 'fighting':
-      return 'crimson';
-    case 'psychic':
-      return 'lightpink';
-    case 'rock':
-      return 'darkkhaki';
-    case 'ghost':
-      return 'ghostwhite';
-    case 'ice':
-      return 'aliceblue';
-    case 'dragon':
-      return 'mediumpurple';
-    case 'flying':
-      return 'lightskyblue';
-    default:
-      return 'gray';
-  }
 };
 
 export default PokemonList;
