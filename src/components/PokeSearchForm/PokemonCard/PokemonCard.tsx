@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { PokemonData } from '../../types/types';
-import { getColorForType } from '../../utils/additional/colorsForTypes';
+import { PokemonData } from '../../../types/types';
+import { getColorForType } from '../../../utils/additional/colorsForTypes';
 
 type PokemonCardProps = {
   pokemon: PokemonData;

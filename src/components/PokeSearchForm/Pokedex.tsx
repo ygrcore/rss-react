@@ -3,8 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import PokeApi from '../../services/PokeApi';
 import { PokemonResult } from '../../types/types';
 import PokemonDetails from '../PokemonDetails/PokemonDetails';
-import SearchBar from './SearchBar';
-import PokemonList from './PokemonList';
+import SearchBar from './SearchBar/SearchBar';
+import PokemonList from './PokemonList/PokemonList';
 import Pagination from '../Pagination/Pagination';
 
 import './Pokedex.css';
