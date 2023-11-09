@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import PokeApi from '../../services/PokeApi';
+import { usePokedex } from '../PokedexContext/usePokedex';
 import { PokemonResult } from '../../types/types';
 import ForceError from '../forceError/ForceError';
 import SearchBar from './SearchBar/SearchBar';
@@ -12,30 +12,22 @@ import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const { getPreloadedPokemons } = PokeApi();
+  const {
+    pokemonList,
+    searchTerm,
+    itemsPerPage,
+    updateSearchTerm,
+    updateItemsPerPage,
+  } = usePokedex();
   const items = localStorage.getItem('searchedPokes');
   const currPage = localStorage.getItem('currentPage');
-  const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
   const [searchResults, setSearchResults] = useState<PokemonResult[]>(
     items ? JSON.parse(items) : []
   );
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem('term') || ''
-  );
   const [currentPage, setCurrentPage] = useState(currPage ? +currPage : 1);
 
-  useEffect(() => {
-    fetchPokemon();
-  }, [itemsPerPage]);
-
-  const fetchPokemon = async () => {
-    const pokemonData = await getPreloadedPokemons(150, 0);
-    setPokemonList(pokemonData);
-  };
-
   const handleSearch = (term: string) => {
-    setSearchTerm(term);
+    updateSearchTerm(term);
     const searchTermRegex = new RegExp(term, 'i');
     localStorage.setItem('term', term);
     const filteredResults = pokemonList.filter((pokemon) =>
@@ -56,17 +48,13 @@ const Pokedex: React.FC = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const newItemsPerPage = parseInt(event.target.value, 10);
-    setItemsPerPage(newItemsPerPage);
+    updateItemsPerPage(newItemsPerPage);
   };
 
   return (
     <div>
       <ForceError />
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        onSearch={handleSearch}
-      />
+      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
       <Pagination
         totalPages={Math.ceil(
           (searchResults.length ? searchResults.length : pokemonList.length) /

@@ -1,12 +1,13 @@
+import { usePokedex } from '../../PokedexContext/usePokedex';
+
 const SearchBar = ({
   onSearch,
   searchTerm,
-  setSearchTerm,
 }: {
   onSearch: (term: string) => void;
   searchTerm: string;
-  setSearchTerm: (term: string) => void;
 }) => {
+  const { updateSearchTerm } = usePokedex();
   const handleSearch = () => {
     onSearch(searchTerm);
     localStorage.setItem('currentPage', '1');
@@ -18,7 +19,7 @@ const SearchBar = ({
         type="text"
         value={searchTerm}
         placeholder="Search for a Pokémon"
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => updateSearchTerm(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSearch();

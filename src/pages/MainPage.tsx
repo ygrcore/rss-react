@@ -1,12 +1,15 @@
 import Pokedex from '../components/PokeSearchForm/Pokedex';
+import { PokedexProvider } from '../components/PokedexContext/PokedexContext';
 import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
 
 const MainPage = () => {
   return (
     <>
-      <ErrorBoundary>
-        <Pokedex />
-      </ErrorBoundary>
+      <PokedexProvider>
+        <ErrorBoundary>
+          <Pokedex />
+        </ErrorBoundary>
+      </PokedexProvider>
     </>
   );
 };
