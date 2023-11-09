@@ -10,12 +10,13 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
-    "moduleResolution": "bundler", // Ваши настройки модуля
+    "moduleResolution": "Node", // Ваши настройки модуля "bundler"
     "allowImportingTsExtensions": true, // Ваши настройки модуля
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noImplicitAny": true
   },
   "include": ["src", ".eslintrc.cjs", "vite.config.ts", "jest.config.cjs"],
   "references": [{ "path": "./tsconfig.node.json" }]
