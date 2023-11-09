@@ -1,28 +1,22 @@
+import { useState } from 'react';
+import './ForceError.css';
+
 const ForceError = () => {
-  const forceError = async () => {
-    try {
-      localStorage.setItem('searchedPokes', 'error');
-      throw new Error('This is a simulated error');
-    } catch (err) {
-      console.log('An error occurred');
-      window.location.reload();
-    }
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const onClick = () => {
+    setIsError(true);
   };
 
-  const repairError = async () => {
-    try {
-      localStorage.setItem('searchedPokes', '');
-      window.location.reload();
-    } catch (err) {
-      console.log('An error occurred after repair');
-      window.location.reload();
-    }
-  };
+  if (isError) {
+    throw new Error('Error boundary test');
+  }
 
   return (
-    <div>
-      <button onClick={repairError}>Repair Error</button>
-      <button onClick={forceError}>Force Error</button>
+    <div className="error">
+      <button className="error__button" type="button" onClick={onClick}>
+        Throw an error
+      </button>
     </div>
   );
 };

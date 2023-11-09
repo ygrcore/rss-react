@@ -6,6 +6,7 @@ import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import SearchBar from './SearchBar/SearchBar';
 import PokemonList from './PokemonList/PokemonList';
 import Pagination from '../Pagination/Pagination';
+import ForceError from '../forceError/ForceError';
 
 import './Pokedex.css';
 
@@ -59,6 +60,7 @@ const Pokedex: React.FC = () => {
 
   return (
     <div>
+      <ForceError />
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
