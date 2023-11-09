@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PokeApi from '../../services/PokeApi';
 import { PokemonResult } from '../../types/types';
-import PokemonDetails from '../PokemonDetails/PokemonDetails';
-import SearchBar from './SearchBar/SearchBar';
-import PokemonList from './PokemonList/PokemonList';
-import Pagination from '../Pagination/Pagination';
 import ForceError from '../forceError/ForceError';
+import SearchBar from './SearchBar/SearchBar';
+import Pagination from '../Pagination/Pagination';
+import PokemonPerPageSelect from './PokemonPerPageSelect/PokemonPerPageSelect';
+import PokemonList from './PokemonList/PokemonList';
+import PokemonDetails from '../PokemonDetails/PokemonDetails';
 
 import './Pokedex.css';
 
@@ -74,14 +75,10 @@ const Pokedex: React.FC = () => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-      <div className="select-amount">
-        <p className="select-title">Amount of pokemons</p>
-        <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-          <option value={20}>20</option>
-        </select>
-      </div>
+      <PokemonPerPageSelect
+        value={itemsPerPage}
+        onChange={handleItemsPerPageChange}
+      />
       <Routes>
         <Route
           path="/"
