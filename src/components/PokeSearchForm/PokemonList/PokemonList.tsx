@@ -5,22 +5,20 @@ import { stopPropagation } from '../../../utils/eventHandler/stopPropaganation';
 import Spinner from '../../spinner/Spinner';
 import PokeApi from '../../../services/PokeApi';
 import PokemonCard from '../PokemonCard/PokemonCard';
+import { usePokedex } from '../../PokedexContext/usePokedex';
 
 import './PokemonList.css';
 
 type PokemonListProps = {
-  pokemonList: PokemonResult[];
   searchResults: PokemonResult[];
   currentPage: number;
-  itemsPerPage: number;
 };
 
 const PokemonList: React.FC<PokemonListProps> = ({
-  pokemonList,
   searchResults,
   currentPage,
-  itemsPerPage,
 }) => {
+  const { itemsPerPage, pokemonList } = usePokedex();
   const { getUrlsFromPreloadedPokes } = PokeApi();
   const [pokemonPerPage, setPokemonPerPage] = useState<PokemonData[]>([]);
   const [isLoading, setIsLoading] = useState(true);

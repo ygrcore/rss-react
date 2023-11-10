@@ -12,13 +12,8 @@ import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  const {
-    pokemonList,
-    searchTerm,
-    itemsPerPage,
-    updateSearchTerm,
-    updateItemsPerPage,
-  } = usePokedex();
+  const { pokemonList, itemsPerPage, updateSearchTerm, updateItemsPerPage } =
+    usePokedex();
   const items = localStorage.getItem('searchedPokes');
   const currPage = localStorage.getItem('currentPage');
   const [searchResults, setSearchResults] = useState<PokemonResult[]>(
@@ -54,7 +49,7 @@ const Pokedex: React.FC = () => {
   return (
     <div>
       <ForceError />
-      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} />
       <Pagination
         totalPages={Math.ceil(
           (searchResults.length ? searchResults.length : pokemonList.length) /
@@ -63,19 +58,14 @@ const Pokedex: React.FC = () => {
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />
-      <PokemonPerPageSelect
-        value={itemsPerPage}
-        onChange={handleItemsPerPageChange}
-      />
+      <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
       <Routes>
         <Route
           path="/"
           element={
             <PokemonList
-              pokemonList={pokemonList}
               searchResults={searchResults}
               currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
             />
           }
         >

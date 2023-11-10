@@ -1,16 +1,17 @@
+import { usePokedex } from '../../PokedexContext/usePokedex';
+
 type PokemonPerPageSelectProps = {
-  value: number;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 const PokemonPerPageSelect: React.FC<PokemonPerPageSelectProps> = ({
-  value,
   onChange,
 }) => {
+  const { itemsPerPage } = usePokedex();
   return (
     <div className="select-amount">
       <p className="select-title">Amount of pokemons</p>
-      <select value={value} onChange={onChange}>
+      <select value={itemsPerPage} onChange={onChange}>
         <option value={10}>10</option>
         <option value={15}>15</option>
         <option value={20}>20</option>

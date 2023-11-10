@@ -1,13 +1,7 @@
 import { usePokedex } from '../../PokedexContext/usePokedex';
 
-const SearchBar = ({
-  onSearch,
-  searchTerm,
-}: {
-  onSearch: (term: string) => void;
-  searchTerm: string;
-}) => {
-  const { updateSearchTerm } = usePokedex();
+const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
+  const { updateSearchTerm, searchTerm } = usePokedex();
   const handleSearch = () => {
     onSearch(searchTerm);
     localStorage.setItem('currentPage', '1');
