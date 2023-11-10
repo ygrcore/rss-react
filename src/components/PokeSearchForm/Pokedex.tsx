@@ -57,6 +57,7 @@ const Pokedex: React.FC = () => {
         )}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        searchResults={searchResults}
       />
       <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
       <Routes>

@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './Pagination.css';
 import { useSearchParams } from 'react-router-dom';
+import { PokemonData } from '../../types/types';
+
+import './Pagination.css';
 
 type PaginationProps = {
   totalPages: number;
   currentPage: number;
+  searchResults: PokemonData[];
   onPageChange: (page: number) => void;
 };
 
@@ -18,6 +21,7 @@ type ChildProps = {
 const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   currentPage,
+  searchResults,
   onPageChange,
 }) => {
   const [searchParams] = useSearchParams('page=1');
@@ -27,20 +31,22 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <>
       <div className="pagination">
-        {pages.map((page) => (
-          <Link
-            to={`?page=${page}`}
-            className={`pagination__button ${
-              currentPage === page ? 'button-active' : ''
-            }`}
-            key={page}
-            onClick={() => {
-              onPageChange(page);
-            }}
-          >
-            {page}
-          </Link>
-        ))}
+        {searchResults.length
+          ? pages.map((page) => (
+              <Link
+                to={`?page=${page}`}
+                className={`pagination__button ${
+                  currentPage === page ? 'button-active' : ''
+                }`}
+                key={page}
+                onClick={() => {
+                  onPageChange(page);
+                }}
+              >
+                {page}
+              </Link>
+            ))
+          : null}
       </div>
       <Child
         page={searchParams.get('page') || query.get('page') || ''}
