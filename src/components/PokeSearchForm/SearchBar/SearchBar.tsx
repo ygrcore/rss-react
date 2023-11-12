@@ -10,6 +10,7 @@ const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
   return (
     <div>
       <input
+        data-testid="input-text"
         type="text"
         value={searchTerm}
         placeholder="Search for a Pokémon"
