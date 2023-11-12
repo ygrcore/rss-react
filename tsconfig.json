@@ -16,7 +16,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["@testing-library/jest-dom"]
   },
   "include": ["src", ".eslintrc.cjs", "vite.config.ts", "jest.config.cjs"],
   "references": [{ "path": "./tsconfig.node.json" }]

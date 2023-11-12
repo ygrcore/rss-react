@@ -81,17 +81,18 @@ const PokemonList: React.FC<PokemonListProps> = ({
           >
             <Spinner />
           </div>
-        ) : (
-          searchResults.length ?
-            <ul id="pokedex">
-            {pokemonPerPage.map((pokemon) => (
+        ) : searchResults.length ? (
+          <ul id="pokedex">
+            {pokemonPerPage?.map((pokemon) => (
               <PokemonCard
                 key={pokemon.id}
                 pokemon={pokemon}
                 currentPage={currentPage}
               />
             ))}
-          </ul> : <p>Nothing Found</p>
+          </ul>
+        ) : (
+          <p>Nothing Found</p>
         )}
       </div>
       <div

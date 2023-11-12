@@ -9,7 +9,7 @@ type PokemonCardProps = {
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, currentPage }) => {
   return (
-    <Link to={`${pokemon.name}?page=${currentPage}`}>
+    <Link data-testid="pokemon-card" to={`${pokemon.name}?page=${currentPage}`}>
       <li
         className="card"
         style={{
