@@ -1,20 +1,18 @@
-import { Component } from 'react';
-import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
-import PokeSearchForm from './components/PokeSearchForm/PokeSearchForm';
-import ForceError from './components/forceError/ForceError';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MainPage from './pages/MainPage';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <ForceError />
-        <ErrorBoundary>
-          <PokeSearchForm />
-        </ErrorBoundary>
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route path="*" element={<MainPage />} />
+        </Routes>
       </div>
-    );
-  }
+    </Router>
+  );
 }
 
 export default App;
-
