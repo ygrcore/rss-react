@@ -12,14 +12,23 @@ describe('SearchBar', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/1/',
       },
     ],
+    searchResults: [
+      {
+        name: 'bulbasaur',
+        url: 'https://pokeapi.co/api/v2/pokemon/1/',
+      },
+    ],
     searchTerm: '',
     itemsPerPage: 10,
+    currentPage: 1,
     updatePokemonList: () => {},
+    updateSearchResults: () => {},
     updateSearchTerm: (newSearchTerm: string) => {
       context.searchTerm = newSearchTerm;
       localStorage.setItem('term', newSearchTerm);
     },
     updateItemsPerPage: () => {},
+    updateCurrentPage: () => {},
   };
 
   const searchTerm = 'bulbasaur';

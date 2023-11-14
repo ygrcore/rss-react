@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { usePokedex } from '../PokedexContext/usePokedex';
-import { PokemonResult } from '../../types/types';
 import ForceError from '../forceError/ForceError';
 import SearchBar from './SearchBar/SearchBar';
 import Pagination from '../Pagination/Pagination';
@@ -12,14 +11,16 @@ import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  const { pokemonList, itemsPerPage, updateSearchTerm, updateItemsPerPage } =
-    usePokedex();
-  const items = localStorage.getItem('searchedPokes');
-  const currPage = localStorage.getItem('currentPage');
-  const [searchResults, setSearchResults] = useState<PokemonResult[]>(
-    items ? JSON.parse(items) : []
-  );
-  const [currentPage, setCurrentPage] = useState(currPage ? +currPage : 1);
+  const {
+    pokemonList,
+    searchResults,
+    itemsPerPage,
+    currentPage,
+    updateSearchResults,
+    updateSearchTerm,
+    updateItemsPerPage,
+    updateCurrentPage,
+  } = usePokedex();
 
   const handleSearch = (term: string) => {
     updateSearchTerm(term);
@@ -28,14 +29,14 @@ const Pokedex: React.FC = () => {
     const filteredResults = pokemonList.filter((pokemon) =>
       searchTermRegex.test(pokemon.name)
     );
-    setSearchResults(filteredResults);
+    updateSearchResults(filteredResults);
     localStorage.setItem('currentPage', '1');
-    setCurrentPage(1);
+    updateCurrentPage(1);
     localStorage.setItem('searchedPokes', JSON.stringify(filteredResults));
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    updateCurrentPage(page);
     localStorage.setItem('currentPage', page.toString());
   };
 

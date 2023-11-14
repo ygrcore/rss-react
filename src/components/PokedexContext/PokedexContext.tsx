@@ -4,11 +4,15 @@ import PokeApi from '../../services/PokeApi';
 
 type PokedexContextType = {
   pokemonList: PokemonResult[];
+  searchResults: PokemonResult[];
   searchTerm: string;
   itemsPerPage: number;
+  currentPage: number;
   updatePokemonList: (pokemonList: PokemonResult[]) => void;
+  updateSearchResults: (pokemonList: PokemonResult[]) => void;
   updateSearchTerm: (term: string) => void;
   updateItemsPerPage: (term: number) => void;
+  updateCurrentPage: (page: number) => void;
 };
 
 export const PokedexContext = createContext<PokedexContextType | undefined>(
@@ -20,6 +24,12 @@ export const PokedexProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [pokemonList, setPokemonList] = useState<PokemonResult[]>([]);
+  const items = localStorage.getItem('searchedPokes');
+  const [searchResults, setSearchResults] = useState<PokemonResult[]>(
+    items ? JSON.parse(items) : []
+  );
+  const currPage = localStorage.getItem('currentPage');
+  const [currentPage, setCurrentPage] = useState(currPage ? +currPage : 1);
   const [searchTerm, setSearchTerm] = useState<string>(
     localStorage.getItem('term') || ''
   );
@@ -46,15 +56,27 @@ export const PokedexProvider: React.FC<{ children: ReactNode }> = ({
     setItemsPerPage(newItemsPerPage);
   };
 
+  const updateSearchResults = (newSearchResults: PokemonResult[]) => {
+    setSearchResults(newSearchResults);
+  };
+
+  const updateCurrentPage = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <PokedexContext.Provider
       value={{
         pokemonList,
+        searchResults,
         searchTerm,
         itemsPerPage,
+        currentPage,
         updatePokemonList,
+        updateSearchResults,
         updateSearchTerm,
         updateItemsPerPage,
+        updateCurrentPage,
       }}
     >
       {children}

@@ -39,11 +39,20 @@ describe('PokemonCard', () => {
         url: 'https://pokeapi.co/api/v2/pokemon/1/',
       },
     ],
+    searchResults: [
+      {
+        name: 'bulbasaur',
+        url: 'https://pokeapi.co/api/v2/pokemon/1/',
+      },
+    ],
     searchTerm: '',
     itemsPerPage: 10,
+    currentPage: 1,
     updatePokemonList: () => {},
+    updateSearchResults: () => {},
     updateSearchTerm: () => {},
     updateItemsPerPage: () => {},
+    updateCurrentPage: () => {},
   };
   test('Ensure that the card component renders the relevant card data', () => {
     const { getByText, getByAltText } = render(
