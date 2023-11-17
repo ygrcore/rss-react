@@ -1,42 +1,52 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { usePokedex } from '../PokedexContext/usePokedex';
+// import { usePokedex } from '../PokedexContext/usePokedex';
 import ForceError from '../forceError/ForceError';
 import SearchBar from './SearchBar/SearchBar';
 import Pagination from '../Pagination/Pagination';
 import PokemonPerPageSelect from './PokemonPerPageSelect/PokemonPerPageSelect';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetails from '../PokemonDetails/PokemonDetails';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { updateSearchResults, updateSearchTerm, updateItemsPerPage, updateCurrentPage, updatePokemonList } from '../../store/reducers/pokedexSlice';
+import { PokeApi } from '../../services/PokeApi';
 
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  const {
-    pokemonList,
-    searchResults,
-    itemsPerPage,
-    currentPage,
-    updateSearchResults,
-    updateSearchTerm,
-    updateItemsPerPage,
-    updateCurrentPage,
-  } = usePokedex();
+  // const {
+  //   pokemonList,
+  //   searchResults,
+  //   itemsPerPage,
+  //   currentPage,
+  //   updateSearchResults,
+  //   updateSearchTerm,
+  //   updateItemsPerPage,
+  //   updateCurrentPage,
+  // } = usePokedex();
+  const {pokemonList, searchResults, itemsPerPage, currentPage} = useAppSelector(state => state.pokedexReducer)
+  const dispatch = useAppDispatch();
+  const {data} = PokeApi.useGetPreloadedPokemonsQuery({limit: 150, offset: 0})
+
+  useEffect(() => {
+    if (data) dispatch(updatePokemonList(data))
+  }, [data]);
 
   const handleSearch = (term: string) => {
-    updateSearchTerm(term);
+    dispatch(updateSearchTerm(term));
     const searchTermRegex = new RegExp(term, 'i');
     localStorage.setItem('term', term);
     const filteredResults = pokemonList.filter((pokemon) =>
       searchTermRegex.test(pokemon.name)
     );
-    updateSearchResults(filteredResults);
+    dispatch(updateSearchResults(filteredResults));
     localStorage.setItem('currentPage', '1');
-    updateCurrentPage(1);
+    dispatch(updateCurrentPage(1));
     localStorage.setItem('searchedPokes', JSON.stringify(filteredResults));
   };
 
   const handlePageChange = (page: number) => {
-    updateCurrentPage(page);
+    dispatch(updateCurrentPage(page));
     localStorage.setItem('currentPage', page.toString());
   };
 
@@ -44,7 +54,7 @@ const Pokedex: React.FC = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const newItemsPerPage = parseInt(event.target.value, 10);
-    updateItemsPerPage(newItemsPerPage);
+    dispatch(updateItemsPerPage(newItemsPerPage));
   };
 
   return (
@@ -58,7 +68,7 @@ const Pokedex: React.FC = () => {
         )}
         currentPage={currentPage}
         onPageChange={handlePageChange}
-        searchResults={searchResults}
+        // searchResults={searchResults}
       />
       <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
       <Routes>

@@ -1,7 +1,11 @@
-import { usePokedex } from '../../PokedexContext/usePokedex';
+// import { usePokedex } from '../../PokedexContext/usePokedex';
+import { updateSearchTerm } from "../../../store/reducers/pokedexSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
-  const { updateSearchTerm, searchTerm } = usePokedex();
+  // const { updateSearchTerm, searchTerm } = usePokedex();
+  const dispatch = useAppDispatch();
+  const { searchTerm } = useAppSelector(state => state.pokedexReducer);
   const handleSearch = () => {
     onSearch(searchTerm);
     localStorage.setItem('currentPage', '1');
@@ -14,7 +18,7 @@ const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
         type="text"
         value={searchTerm}
         placeholder="Search for a Pokémon"
-        onChange={(e) => updateSearchTerm(e.target.value)}
+        onChange={(e) => dispatch(updateSearchTerm(e.target.value))}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleSearch();

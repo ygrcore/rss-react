@@ -3,11 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { PokemonData, PokemonResult } from '../../../types/types';
 import { stopPropagation } from '../../../utils/eventHandler/stopPropaganation';
 import Spinner from '../../spinner/Spinner';
-import PokeApi from '../../../services/PokeApi';
+// import PokeApi from '../../../services/PokeApi';
+import { PokeApi } from '../../../services/PokeApi';
 import PokemonCard from '../PokemonCard/PokemonCard';
-import { usePokedex } from '../../PokedexContext/usePokedex';
+// import { usePokedex } from '../../PokedexContext/usePokedex';
 
 import './PokemonList.css';
+import { useAppSelector } from '../../../hooks/redux';
+// import { updatePokemonList } from '../../../store/reducers/pokedexSlice';
 
 type PokemonListProps = {
   searchResults: PokemonResult[];
@@ -18,25 +21,33 @@ const PokemonList: React.FC<PokemonListProps> = ({
   searchResults,
   currentPage,
 }) => {
-  const { itemsPerPage, pokemonList } = usePokedex();
-  const { getUrlsFromPreloadedPokes } = PokeApi();
+  // const { itemsPerPage, pokemonList } = usePokedex();
+  const {itemsPerPage, pokemonList } = useAppSelector(state => state.pokedexReducer);
+  // const dispatch = useAppDispatch();
+
+
+  // const { getUrlsFromPreloadedPokes } = PokeApi();
   const [pokemonPerPage, setPokemonPerPage] = useState<PokemonData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedResults = searchResults.length
-    ? searchResults.slice(startIndex, endIndex)
-    : pokemonList.slice(startIndex, endIndex);
+  ? searchResults.slice(startIndex, endIndex)
+  : pokemonList.slice(startIndex, endIndex);
+
+  const {data, isLoading, isError, isFetching} = PokeApi.useGetUrlsFromPreloadedPokesQuery(displayedResults);
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     fetchPokes();
-  }, [currentPage, pokemonList, searchResults]);
+  }, [data, currentPage, pokemonList, searchResults]);
 
   const fetchPokes = async () => {
-    const pokemonData = await getUrlsFromPreloadedPokes(displayedResults);
-    setPokemonPerPage(pokemonData);
-    setIsLoading(false);
+    // const pokemonData = await getUrlsFromPreloadedPokes(displayedResults);
+    if (data) {
+      setPokemonPerPage(data);
+    }
+    // setIsLoading(false);
   };
 
   const [outletVisible, setOutletVisible] = useState(true);
@@ -70,7 +81,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   return (
     <div className="pokemons">
       <div className="pokemons__list">
-        {isLoading ? (
+        {(isLoading || isFetching) && (
           <div
             style={{
               display: 'flex',
@@ -81,17 +92,21 @@ const PokemonList: React.FC<PokemonListProps> = ({
           >
             <Spinner />
           </div>
-        ) : searchResults.length ? (
-          <ul id="pokedex">
-            {pokemonPerPage?.map((pokemon) => (
-              <PokemonCard
-                key={pokemon.id}
-                pokemon={pokemon}
-                currentPage={currentPage}
-              />
-            ))}
-          </ul>
-        ) : (
+        )}
+        {
+          isFetching ? null : (
+            <ul id="pokedex">
+              {pokemonPerPage?.map((pokemon) => (
+                <PokemonCard
+                  key={pokemon.id}
+                  pokemon={pokemon}
+                  currentPage={currentPage}
+                />
+              ))}
+            </ul>
+          )
+        }
+        { isError && (
           <p>Nothing Found</p>
         )}
       </div>
