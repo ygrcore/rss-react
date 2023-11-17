@@ -4,15 +4,20 @@ import {
   PokemonResponse,
   PokemonResult,
 } from '../types/types';
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/dist/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
 export const PokeApi = createApi({
   reducerPath: 'PokeApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
   endpoints: (build) => ({
-    getPreloadedPokemons: build.query<PokemonResult[], {limit: number, offset: number}>({
+    getPreloadedPokemons: build.query<
+      PokemonResult[],
+      { limit: number; offset: number }
+    >({
       queryFn: async (args) => {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${args.limit}&offset=${args.offset}`);
+        const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon?limit=${args.limit}&offset=${args.offset}`
+        );
         if (res.ok) {
           const data = await res.json();
           const results = await data.results;
@@ -38,12 +43,12 @@ export const PokeApi = createApi({
       },
     }),
     getPokemon: build.query<PokemonData, string>({
-      queryFn: async(id) => {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const response = await res.json();
-            return { data: transformData(response) };
-      }
-    })
+      queryFn: async (id) => {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const response = await res.json();
+        return { data: transformData(response) };
+      },
+    }),
   }),
 });
 
@@ -54,48 +59,48 @@ export const PokeApi = createApi({
 //   const baseLimit = 10;
 //   const baseOffset = 10;
 
-  // const getPreloadedPokemons = async (
-  //   limit = baseLimit,
-  //   offset = baseOffset
-  // ): Promise<PokemonResult[]> => {
-  //   const res = await getResource<PokemonResource>(
-  //     `${apiBase}pokemon?limit=${limit}&offset=${offset}`
-  //   );
-  //   const results = res.results;
-  //   return Array.isArray(results) ? results : [results];
-  // };
+// const getPreloadedPokemons = async (
+//   limit = baseLimit,
+//   offset = baseOffset
+// ): Promise<PokemonResult[]> => {
+//   const res = await getResource<PokemonResource>(
+//     `${apiBase}pokemon?limit=${limit}&offset=${offset}`
+//   );
+//   const results = res.results;
+//   return Array.isArray(results) ? results : [results];
+// };
 
-  // const getUrlsFromPreloadedPokes = async (
-  //   result: PokemonResult[]
-  // ): Promise<PokemonData[]> => {
-  //   if (Array.isArray(result)) {
-  //     const pokemonData = await Promise.all(
-  //       result.map(async (result) => {
-  //         const pokemonResponse = await fetch(result.url);
-  //         const pokemon = await pokemonResponse.json();
-  //         return transformData(pokemon);
-  //       })
-  //     );
-  //     return pokemonData;
-  //   } else {
-  //     throw new Error();
-  //   }
-  // };
+// const getUrlsFromPreloadedPokes = async (
+//   result: PokemonResult[]
+// ): Promise<PokemonData[]> => {
+//   if (Array.isArray(result)) {
+//     const pokemonData = await Promise.all(
+//       result.map(async (result) => {
+//         const pokemonResponse = await fetch(result.url);
+//         const pokemon = await pokemonResponse.json();
+//         return transformData(pokemon);
+//       })
+//     );
+//     return pokemonData;
+//   } else {
+//     throw new Error();
+//   }
+// };
 
 //   const getPokemon = async (id: string): Promise<PokemonData> => {
 //     const res = await getResource<PokemonResponse>(`${apiBase}pokemon/${id}`);
 //     return transformData(res);
 //   };
 
-  const transformData = (pokemon: PokemonResponse) => {
-    const types = pokemon.types?.map((type) => type.type.name).join(', ');
-    return {
-      name: pokemon.name,
-      image: pokemon.sprites.front_default,
-      type: types,
-      id: pokemon.id,
-    };
+const transformData = (pokemon: PokemonResponse) => {
+  const types = pokemon.types?.map((type) => type.type.name).join(', ');
+  return {
+    name: pokemon.name,
+    image: pokemon.sprites.front_default,
+    type: types,
+    id: pokemon.id,
   };
+};
 
 //   return {
 //     getPokemon,

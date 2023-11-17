@@ -1,6 +1,5 @@
-import { PokemonResult } from "../../types/types";
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-
+import { PokemonResult } from '../../types/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface pokedexState {
   pokemonList: PokemonResult[];
@@ -12,7 +11,9 @@ interface pokedexState {
   error: string;
 }
 const storedSearchResults = localStorage.getItem('searchedPokes');
-const initialSearchResults = storedSearchResults ? JSON.parse(storedSearchResults) : [];
+const initialSearchResults = storedSearchResults
+  ? JSON.parse(storedSearchResults)
+  : [];
 const currPage = localStorage.getItem('currentPage');
 const initialCurrPage = currPage ? localStorage.getItem('term') : '';
 
@@ -24,7 +25,7 @@ const initialState: pokedexState = {
   currentPage: initialCurrPage ? +initialCurrPage : 1,
   isLoading: false,
   error: '',
-}
+};
 
 const pokedexSlice = createSlice({
   name: 'pokedex',
@@ -45,7 +46,7 @@ const pokedexSlice = createSlice({
     updateCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
-  }
+  },
 });
 
 export const {

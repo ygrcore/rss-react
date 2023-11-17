@@ -10,9 +10,9 @@ const MainPage = () => {
         <img src={pokemonLogo} alt="Pokemon Logo" />
       </div>
       {/* <PokedexProvider> */}
-        <ErrorBoundary>
-          <Pokedex />
-        </ErrorBoundary>
+      <ErrorBoundary>
+        <Pokedex />
+      </ErrorBoundary>
       {/* </PokedexProvider> */}
     </>
   );

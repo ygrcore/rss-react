@@ -22,9 +22,10 @@ const PokemonList: React.FC<PokemonListProps> = ({
   currentPage,
 }) => {
   // const { itemsPerPage, pokemonList } = usePokedex();
-  const {itemsPerPage, pokemonList } = useAppSelector(state => state.pokedexReducer);
+  const { itemsPerPage, pokemonList } = useAppSelector(
+    (state) => state.pokedexReducer
+  );
   // const dispatch = useAppDispatch();
-
 
   // const { getUrlsFromPreloadedPokes } = PokeApi();
   const [pokemonPerPage, setPokemonPerPage] = useState<PokemonData[]>([]);
@@ -32,10 +33,11 @@ const PokemonList: React.FC<PokemonListProps> = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedResults = searchResults.length
-  ? searchResults.slice(startIndex, endIndex)
-  : pokemonList.slice(startIndex, endIndex);
+    ? searchResults.slice(startIndex, endIndex)
+    : pokemonList.slice(startIndex, endIndex);
 
-  const {data, isLoading, isError, isFetching} = PokeApi.useGetUrlsFromPreloadedPokesQuery(displayedResults);
+  const { data, isLoading, isError, isFetching } =
+    PokeApi.useGetUrlsFromPreloadedPokesQuery(displayedResults);
 
   useEffect(() => {
     // setIsLoading(true);
@@ -93,22 +95,18 @@ const PokemonList: React.FC<PokemonListProps> = ({
             <Spinner />
           </div>
         )}
-        {
-          isFetching ? null : (
-            <ul id="pokedex">
-              {pokemonPerPage?.map((pokemon) => (
-                <PokemonCard
-                  key={pokemon.id}
-                  pokemon={pokemon}
-                  currentPage={currentPage}
-                />
-              ))}
-            </ul>
-          )
-        }
-        { isError && (
-          <p>Nothing Found</p>
+        {isFetching ? null : (
+          <ul id="pokedex">
+            {pokemonPerPage?.map((pokemon) => (
+              <PokemonCard
+                key={pokemon.id}
+                pokemon={pokemon}
+                currentPage={currentPage}
+              />
+            ))}
+          </ul>
         )}
+        {isError && <p>Nothing Found</p>}
       </div>
       <div
         className="pokemons__outlet"

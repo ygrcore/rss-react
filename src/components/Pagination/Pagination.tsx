@@ -38,23 +38,21 @@ const Pagination: React.FC<PaginationProps> = ({
     <>
       <div className="pagination">
         {/* {searchResults.length */}
-         {
-         pages.map((page) => (
-              <Link
-                to={`?page=${page}`}
-                className={`pagination__button ${
-                  currentPage === page ? 'button-active' : ''
-                }`}
-                key={page}
-                onClick={() => {
-                  onPageChange(page);
-                }}
-              >
-                {page}
-              </Link>
-            ))
-         }
-          {/* // : null */}
+        {pages.map((page) => (
+          <Link
+            to={`?page=${page}`}
+            className={`pagination__button ${
+              currentPage === page ? 'button-active' : ''
+            }`}
+            key={page}
+            onClick={() => {
+              onPageChange(page);
+            }}
+          >
+            {page}
+          </Link>
+        ))}
+        {/* // : null */}
       </div>
       <Child
         page={searchParams.get('page') || query.get('page') || ''}

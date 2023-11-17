@@ -11,7 +11,9 @@ const PokemonDetails = () => {
   // const { getPokemon } = PokeApi();
   // const [pokemon, setPokemon] = useState<PokemonData>();
 
-  const {data, isFetching, isLoading} = PokeApi.useGetPokemonQuery(pokemonName!);
+  const { data, isFetching, isLoading } = PokeApi.useGetPokemonQuery(
+    pokemonName!
+  );
 
   // useEffect(() => {
   //   // setIsLoading(true);
@@ -29,9 +31,7 @@ const PokemonDetails = () => {
 
   return (
     <div>
-      {(isLoading || isFetching) && (
-        <Spinner />
-      )}
+      {(isLoading || isFetching) && <Spinner />}
       {isFetching ? null : (
         <>
           <h2>Pokemon Details for {data?.name}</h2>

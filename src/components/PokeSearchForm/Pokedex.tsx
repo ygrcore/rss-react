@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 // import { usePokedex } from '../PokedexContext/usePokedex';
 import ForceError from '../forceError/ForceError';
@@ -8,7 +8,13 @@ import PokemonPerPageSelect from './PokemonPerPageSelect/PokemonPerPageSelect';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { updateSearchResults, updateSearchTerm, updateItemsPerPage, updateCurrentPage, updatePokemonList } from '../../store/reducers/pokedexSlice';
+import {
+  updateSearchResults,
+  updateSearchTerm,
+  updateItemsPerPage,
+  updateCurrentPage,
+  updatePokemonList,
+} from '../../store/reducers/pokedexSlice';
 import { PokeApi } from '../../services/PokeApi';
 
 import './Pokedex.css';
@@ -24,12 +30,16 @@ const Pokedex: React.FC = () => {
   //   updateItemsPerPage,
   //   updateCurrentPage,
   // } = usePokedex();
-  const {pokemonList, searchResults, itemsPerPage, currentPage} = useAppSelector(state => state.pokedexReducer)
+  const { pokemonList, searchResults, itemsPerPage, currentPage } =
+    useAppSelector((state) => state.pokedexReducer);
   const dispatch = useAppDispatch();
-  const {data} = PokeApi.useGetPreloadedPokemonsQuery({limit: 150, offset: 0})
+  const { data } = PokeApi.useGetPreloadedPokemonsQuery({
+    limit: 150,
+    offset: 0,
+  });
 
   useEffect(() => {
-    if (data) dispatch(updatePokemonList(data))
+    if (data) dispatch(updatePokemonList(data));
   }, [data]);
 
   const handleSearch = (term: string) => {
