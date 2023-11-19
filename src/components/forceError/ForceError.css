@@ -1,0 +1,19 @@
+.error {
+  display: flex;
+  justify-content: end;
+  margin: 0.2em 0.2em 0;
+}
+.error__button {
+  background-color: #ff7070;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.error__button:hover {
+  background-color: #ff7070;
+  box-shadow:
+    0 0 0.2em #ff7070,
+    0 0 10px #ff7070,
+    0 0 0.2em #ff7070;
+}

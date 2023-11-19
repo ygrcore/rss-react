@@ -1,90 +1,58 @@
-export interface PokemonData {
-  name: string;
-  image?: string;
-  // add more
-}
+import { PokemonData, PokemonResponse, PokemonResult } from '../types/types';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
-export interface PokemonResult {
-  name: string;
-  url: string;
-}
+export const PokeApi = createApi({
+  reducerPath: 'PokeApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
+  endpoints: (build) => ({
+    getPreloadedPokemons: build.query<
+      PokemonResult[],
+      { limit: number; offset: number }
+    >({
+      queryFn: async (args) => {
+        const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon?limit=${args.limit}&offset=${args.offset}`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const results = await data.results;
+          return { data: Array.isArray(results) ? results : [results] };
+        }
+        throw new Error('Failed to fetch data');
+      },
+    }),
+    getUrlsFromPreloadedPokes: build.query<PokemonData[], PokemonResult[]>({
+      queryFn: async (result) => {
+        if (Array.isArray(result)) {
+          const pokemonData = await Promise.all(
+            result.map(async (pokemonResult) => {
+              const pokemonResponse = await fetch(pokemonResult.url);
+              const pokemon = await pokemonResponse.json();
+              return transformData(pokemon);
+            })
+          );
+          return { data: pokemonData };
+        } else {
+          throw new Error('Invalid argument type');
+        }
+      },
+    }),
+    getPokemon: build.query<PokemonData, string>({
+      queryFn: async (id) => {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const response = await res.json();
+        return { data: transformData(response) };
+      },
+    }),
+  }),
+});
 
-export interface PokemonResponse {
-  name: string;
-  sprites: {
-    front_default: string;
-    // add more
+const transformData = (pokemon: PokemonResponse) => {
+  const types = pokemon.types?.map((type) => type.type.name).join(', ');
+  return {
+    name: pokemon.name,
+    image: pokemon.sprites.front_default,
+    type: types,
+    id: pokemon.id,
   };
-  // add more
-}
-
-export interface PokemonResource {
-  count?: number;
-  next?: string;
-  previous?: string;
-  results: PokemonResult | PokemonResult[];
-}
-
-class PokeApi {
-  _apiBase = 'https://pokeapi.co/api/v2/';
-  _baseLimit = 10;
-  _baseOffset = 10;
-
-  getResource = async <T>(url: string): Promise<T> => {
-    let res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    }
-
-    return await res.json();
-  };
-
-  getAllPokemons = async (
-    limit = this._baseLimit,
-    offset = this._baseOffset
-  ): Promise<PokemonData[]> => {
-    const res = await this.getResource<PokemonResource>(
-      `${this._apiBase}pokemon?limit=${limit}&offset=${offset}`
-    );
-    const results = res.results;
-    if (Array.isArray(results)) {
-      const pokemonData = await Promise.all(
-        results.map(async (result: PokemonResult) => {
-          const pokemonResponse = await fetch(result.url);
-          const pokemon: PokemonResponse = await pokemonResponse.json();
-          return this._transformData(pokemon);
-        })
-      );
-      return pokemonData;
-    } else {
-      throw new Error();
-    }
-  };
-
-  getPokemonsNames = async (): Promise<string[]> => {
-    const res = await this.getResource<PokemonResource>(`${this._apiBase}pokemon?limit=100000&offset=0`);
-    const results = res.results;
-    if (Array.isArray(results)) {
-      const names = results.map((poke) => poke.name);
-      return names;
-    }
-    return [];
-  }
-
-  getPokemon = async (id: number | string): Promise<PokemonData> => {
-    const res = await this.getResource<PokemonResponse>(
-      `${this._apiBase}pokemon/${id}`
-    );
-    return this._transformData(res);
-  };
-
-  _transformData = (pokemon: PokemonResponse): PokemonData => {
-    return {
-      name: pokemon.name,
-      image: pokemon.sprites.front_default,
-    };
-  };
-}
-
-export default PokeApi;
+};
