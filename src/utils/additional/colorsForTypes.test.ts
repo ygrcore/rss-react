@@ -1,4 +1,4 @@
-import { getColorForType } from "./colorsForTypes";
+import { getColorForType } from './colorsForTypes';
 
 describe('getColorForType', () => {
   it('returns "lightyellow" for type "bug"', () => {

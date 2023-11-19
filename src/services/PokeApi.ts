@@ -1,8 +1,4 @@
-import {
-  PokemonData,
-  PokemonResponse,
-  PokemonResult,
-} from '../types/types';
+import { PokemonData, PokemonResponse, PokemonResult } from '../types/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
 export const PokeApi = createApi({

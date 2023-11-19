@@ -8,7 +8,6 @@ import PokemonCard from '../PokemonCard/PokemonCard';
 import './PokemonList.css';
 import { useAppSelector } from '../../../hooks/redux';
 
-
 type PokemonListProps = {
   searchResults: PokemonResult[];
   currentPage: number;
