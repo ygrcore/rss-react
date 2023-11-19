@@ -1,11 +1,18 @@
 import PokemonList from './PokemonList';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { PokedexContext } from '../../PokedexContext/PokedexContext';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+import { setupStore } from '../../../store/store';
+import { Provider } from 'react-redux';
+import type { ReactNode } from 'react';
 
-jest.mock('../../../services/PokeApi');
+console.error = jest.fn();
+const store = setupStore();
+
+function Wrapper(props: { children: ReactNode }) {
+  return <Provider store={store}>{props.children}</Provider>;
+}
 
 describe('PokemonList', () => {
   const props = {
@@ -18,38 +25,15 @@ describe('PokemonList', () => {
     currentPage: 1,
   };
 
-  const context = {
-    pokemonList: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchResults: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchTerm: '',
-    itemsPerPage: 10,
-    currentPage: 1,
-    updatePokemonList: () => {},
-    updateSearchResults: () => {},
-    updateSearchTerm: () => {},
-    updateItemsPerPage: () => {},
-    updateCurrentPage: () => {},
-  };
-
   test('Verify that the component renders with mocked value', async () => {
     act(() => {
       render(
         <BrowserRouter>
-          <PokedexContext.Provider value={context}>
+          <Wrapper>
             <Routes>
               <Route path="/" element={<PokemonList {...props} />} />
             </Routes>
-          </PokedexContext.Provider>
+          </Wrapper>
         </BrowserRouter>
       );
     });
@@ -62,11 +46,11 @@ describe('PokemonList', () => {
     await act(async () => {
       render(
         <BrowserRouter>
-          <PokedexContext.Provider value={context}>
+          <Wrapper>
             <Routes>
               <Route path="/" element={<PokemonList {...props} />} />
             </Routes>
-          </PokedexContext.Provider>
+          </Wrapper>
         </BrowserRouter>
       );
     });
@@ -80,14 +64,17 @@ describe('PokemonList', () => {
       searchResults: [],
       currentPage: 1,
     };
+
+    localStorage.setItem('searchedPokes', '[]');
+
     await act(async () => {
       render(
         <BrowserRouter>
-          <PokedexContext.Provider value={context}>
+          <Wrapper>
             <Routes>
               <Route path="/" element={<PokemonList {...props} />} />
             </Routes>
-          </PokedexContext.Provider>
+          </Wrapper>
         </BrowserRouter>
       );
     });
@@ -102,11 +89,11 @@ describe('PokemonList', () => {
     await act(async () => {
       render(
         <BrowserRouter>
-          <PokedexContext.Provider value={context}>
+          <Wrapper>
             <Routes>
               <Route path="/*" element={<PokemonList {...props} />} />
             </Routes>
-          </PokedexContext.Provider>
+          </Wrapper>
         </BrowserRouter>
       );
     });

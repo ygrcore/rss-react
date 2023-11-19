@@ -11,21 +11,6 @@ describe('Pagination', () => {
         <Pagination
           totalPages={2}
           currentPage={1}
-          searchResults={[
-            { name: 'charmander' },
-            { name: 'charmeleon' },
-            { name: 'charizard' },
-            { name: 'pikachu' },
-            { name: 'raichu' },
-            { name: 'machop' },
-            { name: 'machoke' },
-            { name: 'machamp' },
-            { name: 'farfetchd' },
-            {
-              name: 'hitmonchan',
-            },
-            { name: 'chansey' },
-          ]}
           onPageChange={onPageChange}
         />
       </MemoryRouter>

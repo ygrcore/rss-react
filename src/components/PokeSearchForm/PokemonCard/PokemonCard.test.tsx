@@ -9,11 +9,19 @@ import PokemonCard from './PokemonCard';
 import { PokemonData } from '../../../types/types';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import { PokedexContext } from '../../PokedexContext/PokedexContext';
 import userEvent from '@testing-library/user-event';
 import PokemonList from '../PokemonList/PokemonList';
 
-jest.mock('../../../services/PokeApi');
+import { setupStore } from '../../../store/store';
+import { Provider } from 'react-redux';
+import type { ReactNode } from 'react';
+
+console.error = jest.fn();
+const store = setupStore();
+
+function Wrapper(props: { children: ReactNode }) {
+  return <Provider store={store}>{props.children}</Provider>;
+}
 describe('PokemonCard', () => {
   const props = {
     searchResults: [
@@ -32,34 +40,12 @@ describe('PokemonCard', () => {
     image: 'bulbasaur.png',
   };
 
-  const context = {
-    pokemonList: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchResults: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchTerm: '',
-    itemsPerPage: 10,
-    currentPage: 1,
-    updatePokemonList: () => {},
-    updateSearchResults: () => {},
-    updateSearchTerm: () => {},
-    updateItemsPerPage: () => {},
-    updateCurrentPage: () => {},
-  };
   test('Ensure that the card component renders the relevant card data', () => {
     const { getByText, getByAltText } = render(
       <BrowserRouter>
-        <PokedexContext.Provider value={context}>
+        <Wrapper>
           <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-        </PokedexContext.Provider>
+        </Wrapper>
       </BrowserRouter>
     );
 
@@ -72,9 +58,9 @@ describe('PokemonCard', () => {
     await act(async () => {
       render(
         <BrowserRouter>
-          <PokedexContext.Provider value={context}>
+          <Wrapper>
             <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-          </PokedexContext.Provider>
+          </Wrapper>
         </BrowserRouter>
       );
     });
@@ -94,10 +80,10 @@ describe('PokemonCard', () => {
     );
     render(
       <BrowserRouter>
-        <PokedexContext.Provider value={context}>
+        <Wrapper>
           <PokemonList {...props} />
           <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-        </PokedexContext.Provider>
+        </Wrapper>
       </BrowserRouter>
     );
     await waitForElementToBeRemoved(() => screen.getByTestId('loader'));

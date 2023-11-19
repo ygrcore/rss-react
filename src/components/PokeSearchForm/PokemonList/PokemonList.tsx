@@ -79,7 +79,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
       setOutletVisible(true);
     }
   };
-
+  const searchedPokesString = localStorage.getItem('searchedPokes');
   return (
     <div className="pokemons">
       <div className="pokemons__list">
@@ -95,6 +95,9 @@ const PokemonList: React.FC<PokemonListProps> = ({
             <Spinner />
           </div>
         )}
+        {searchedPokesString && JSON.parse(searchedPokesString).length === 0 ? (
+          <p>Nothing Found</p>
+        ) : null}
         {isFetching ? null : (
           <ul id="pokedex">
             {pokemonPerPage?.map((pokemon) => (

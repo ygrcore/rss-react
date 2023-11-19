@@ -38,10 +38,21 @@ const PokeApi = () => {
     });
   };
 
-  const getPokemon = async (): Promise<PokemonData> => {
+  const getPokemon = async () => {
     return new Promise((resolve) => {
       console.log('Called mocked getPokemon');
-      process.nextTick(() => resolve(singlePokemon));
+      process.nextTick(() =>
+        resolve({
+          data: {
+            name: 'Bulbasaur',
+            id: 1,
+            image: 'bulbasaur.png',
+            type: 'Grass/Poison',
+          },
+          isFetching: false,
+          isLoading: false,
+        })
+      );
     });
   };
 

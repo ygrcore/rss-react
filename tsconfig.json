@@ -19,6 +19,12 @@
     "noImplicitAny": true,
     "types": ["@testing-library/jest-dom"]
   },
-  "include": ["src", ".eslintrc.cjs", "vite.config.ts", "jest.config.cjs"],
+  "include": [
+    "src",
+    ".eslintrc.cjs",
+    "vite.config.ts",
+    "jest.config.cjs",
+    "jest.setup.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

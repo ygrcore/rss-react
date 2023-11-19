@@ -1,101 +1,89 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SearchBar from './SearchBar';
-import { PokedexContext } from '../../PokedexContext/PokedexContext';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+import { setupStore } from '../../../store/store';
+import { Provider } from 'react-redux';
+import type { ReactNode } from 'react';
+import { updateSearchTerm } from '../../../store/reducers/pokedexSlice';
+
+console.error = jest.fn();
+const store = setupStore();
+
+function Wrapper(props: { children: ReactNode }) {
+  return <Provider store={store}>{props.children}</Provider>;
+}
 
 describe('SearchBar', () => {
-  const context = {
-    pokemonList: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchResults: [
-      {
-        name: 'bulbasaur',
-        url: 'https://pokeapi.co/api/v2/pokemon/1/',
-      },
-    ],
-    searchTerm: '',
-    itemsPerPage: 10,
-    currentPage: 1,
-    updatePokemonList: () => {},
-    updateSearchResults: () => {},
-    updateSearchTerm: (newSearchTerm: string) => {
-      context.searchTerm = newSearchTerm;
-      localStorage.setItem('term', newSearchTerm);
-    },
-    updateItemsPerPage: () => {},
-    updateCurrentPage: () => {},
-  };
-
-  const searchTerm = 'bulbasaur';
-
-  test('input should be empty initially', async () => {
+  test('input should be empty initially', () => {
     render(
       <BrowserRouter>
-        <PokedexContext.Provider value={context}>
+        <Wrapper>
           <SearchBar onSearch={jest.fn()} />
-        </PokedexContext.Provider>
+        </Wrapper>
       </BrowserRouter>
     );
     const textInput = screen.getByTestId('input-text');
     expect(textInput).toHaveValue('');
   });
-  it('changing input value by clicking button and change value in useContext', async () => {
-    await waitFor(() => {
-      const newSearchTerm = 'bulbasaur';
-      context.updateSearchTerm(newSearchTerm);
-    });
+
+  test('changing input value by clicking button and change value in useContext', async () => {
+    const newSearchTerm = 'bulbasaur';
+    store.dispatch(updateSearchTerm(newSearchTerm));
+
     render(
       <BrowserRouter>
-        <PokedexContext.Provider value={context}>
+        <Wrapper>
           <SearchBar onSearch={jest.fn()} />
-        </PokedexContext.Provider>
+        </Wrapper>
       </BrowserRouter>
     );
+
     const input = screen.getByTestId('input-text');
     const button = screen.getByRole('button');
 
-    fireEvent.click(button);
-    await waitFor(() => expect(input).toHaveValue('bulbasaur'));
+    await waitFor(() => {
+      fireEvent.click(button);
+      expect(input).toHaveValue('bulbasaur');
+    });
   });
 
-  it('Verify that clicking the Search button saves the entered value to the local storage', async () => {
-    await waitFor(() => {
-      const newSearchTerm = 'bulbasaur';
-      context.updateSearchTerm(newSearchTerm);
-    });
+  test('Verify that clicking the Search button saves the entered value to the local storage', async () => {
+    const newSearchTerm = 'bulbasaur';
+
+    store.dispatch(updateSearchTerm(newSearchTerm));
+    localStorage.setItem('term', newSearchTerm);
+
     render(
-      <PokedexContext.Provider value={context}>
+      <Wrapper>
         <SearchBar onSearch={jest.fn()} />
-      </PokedexContext.Provider>
+      </Wrapper>
     );
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByTestId('input-text');
     const button = screen.getByRole('button');
 
-    fireEvent.change(input, { target: { value: searchTerm } });
+    fireEvent.change(input, { target: { value: newSearchTerm } });
     fireEvent.click(button);
 
-    const localStorageValue =
-      localStorage.getItem('term') || JSON.stringify('');
-    expect(localStorageValue).toBe('bulbasaur');
+    await waitFor(() => {
+      const localStorageValue =
+        localStorage.getItem('term') || JSON.stringify('');
+      expect(localStorageValue).toBe('bulbasaur');
+    });
   });
 
-  it('Check that the component retrieves the value from the local storage upon mounting', () => {
+  test('Check that the component retrieves the value from the local storage upon mounting', () => {
     localStorage.setItem('inputValue', JSON.stringify('bulbasaur'));
     render(
       <BrowserRouter>
-        <PokedexContext.Provider value={context}>
+        <Wrapper>
           <SearchBar onSearch={jest.fn()} />
-        </PokedexContext.Provider>
+        </Wrapper>
       </BrowserRouter>
     );
 
-    const inputElement = screen.getByRole('textbox') as HTMLInputElement;
+    const inputElement = screen.getByTestId('input-text') as HTMLInputElement;
     expect(inputElement.value).toBe('bulbasaur');
   });
 });

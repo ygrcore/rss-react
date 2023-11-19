@@ -3,24 +3,42 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
 import PokemonDetails from './PokemonDetails';
 
-jest.mock('../../services/PokeApi');
+import fetchMock from 'jest-fetch-mock';
+import { setupStore } from '../../store/store';
+import { Provider } from 'react-redux';
+import type { ReactNode } from 'react';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ pokemonName: 'bulbasaur' }),
-}));
+console.error = jest.fn();
+const store = setupStore();
+
+function Wrapper(props: { children: ReactNode }) {
+  return <Provider store={store}>{props.children}</Provider>;
+}
 
 describe('PokemonDetails', () => {
+  const data = {};
+
+  beforeAll(() => {
+    fetchMock.mockOnceIf('https://pokeapi.co/api/v2/pokemon/bilbasaur', () =>
+      Promise.resolve({
+        status: 200,
+        body: JSON.stringify({ data }),
+      })
+    );
+  });
+
   test('renders Pokemon details correctly', async () => {
     act(() => {
       render(
         <BrowserRouter>
-          <PokemonDetails />
+          <Wrapper>
+            <PokemonDetails />
+          </Wrapper>
         </BrowserRouter>
       );
     });
 
-    await waitFor(async () => {
+    await waitFor(() => {
       const pokemonDetails = screen.findByText(/Pokemon Details for bulbasaur/);
       const altText = screen.findByAltText(/bulbasaur/);
       const pokemonNumber = screen.findByText(/Pokemon number: 1/);
