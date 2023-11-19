@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-// import { PokemonData } from '../../types/types';
-// import { useAppSelector } from '../../hooks/redux';
 
 import './Pagination.css';
 
 type PaginationProps = {
   totalPages: number;
   currentPage: number;
-  // searchResults: PokemonData[];
   onPageChange: (page: number) => void;
 };
 
@@ -22,22 +19,15 @@ type ChildProps = {
 const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   currentPage,
-  // searchResults,
   onPageChange,
 }) => {
-  // const {searchResults, pokemonList} = useAppSelector(state => state.pokedexReducer);
   const [searchParams] = useSearchParams('page=1');
   const query = useQuery();
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
-  // console.log('query', query);
-  // console.log('pages', pages);
-  // console.log(searchResults);
-
   return (
     <>
       <div className="pagination">
-        {/* {searchResults.length */}
         {pages.map((page) => (
           <Link
             to={`?page=${page}`}
@@ -52,7 +42,6 @@ const Pagination: React.FC<PaginationProps> = ({
             {page}
           </Link>
         ))}
-        {/* // : null */}
       </div>
       <Child
         page={searchParams.get('page') || query.get('page') || ''}

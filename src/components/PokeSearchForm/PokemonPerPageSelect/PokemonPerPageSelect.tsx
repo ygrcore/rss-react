@@ -1,5 +1,3 @@
-// import { usePokedex } from '../../PokedexContext/usePokedex';
-
 import { useAppSelector } from '../../../hooks/redux';
 
 type PokemonPerPageSelectProps = {
@@ -9,7 +7,6 @@ type PokemonPerPageSelectProps = {
 const PokemonPerPageSelect: React.FC<PokemonPerPageSelectProps> = ({
   onChange,
 }) => {
-  // const { itemsPerPage } = usePokedex();
   const { itemsPerPage } = useAppSelector((state) => state.pokedexReducer);
   return (
     <div className="select-amount">

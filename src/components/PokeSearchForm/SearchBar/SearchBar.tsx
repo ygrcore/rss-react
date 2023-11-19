@@ -1,9 +1,7 @@
-// import { usePokedex } from '../../PokedexContext/usePokedex';
 import { updateSearchTerm } from '../../../store/reducers/pokedexSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
-  // const { updateSearchTerm, searchTerm } = usePokedex();
   const dispatch = useAppDispatch();
   const { searchTerm } = useAppSelector((state) => state.pokedexReducer);
   const handleSearch = () => {

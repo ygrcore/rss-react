@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import { usePokedex } from '../PokedexContext/usePokedex';
 import ForceError from '../forceError/ForceError';
 import SearchBar from './SearchBar/SearchBar';
 import Pagination from '../Pagination/Pagination';
@@ -20,16 +19,6 @@ import { PokeApi } from '../../services/PokeApi';
 import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
-  // const {
-  //   pokemonList,
-  //   searchResults,
-  //   itemsPerPage,
-  //   currentPage,
-  //   updateSearchResults,
-  //   updateSearchTerm,
-  //   updateItemsPerPage,
-  //   updateCurrentPage,
-  // } = usePokedex();
   const { pokemonList, searchResults, itemsPerPage, currentPage } =
     useAppSelector((state) => state.pokedexReducer);
   const dispatch = useAppDispatch();
@@ -78,7 +67,6 @@ const Pokedex: React.FC = () => {
         )}
         currentPage={currentPage}
         onPageChange={handlePageChange}
-        // searchResults={searchResults}
       />
       <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
       <Routes>
