@@ -19,7 +19,7 @@
     "jsx": "preserve",
     "noImplicitAny": true,
     "types": ["@testing-library/jest-dom"],
-    "plugins": [{ "name": "next" }],
+    "plugins": [{ "name": "next" }]
   },
   "include": [
     "src",

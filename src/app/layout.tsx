@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'My Pokemons',
-  description: 'My App is about Pokemons'
-}
+  description: 'My App is about Pokemons',
+};
 
 export default function RootLayout({
   children,
