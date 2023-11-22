@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ForceError from '../forceError/ForceError';

@@ -2,29 +2,34 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
     "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
-    "moduleResolution": "Node", // Ваши настройки модуля "bundler"
+    "moduleResolution": "bundler", // Ваши настройки модуля "bundler"
     "allowImportingTsExtensions": true, // Ваши настройки модуля
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "noImplicitAny": true,
-    "types": ["@testing-library/jest-dom"]
+    "types": ["@testing-library/jest-dom"],
+    "plugins": [{ "name": "next" }],
   },
   "include": [
     "src",
     ".eslintrc.cjs",
     "vite.config.ts",
     "jest.config.cjs",
-    "jest.setup.ts"
+    "jest.setup.ts",
+    "./dist/types/**/*.ts",
+    "./next-env.d.ts"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["./node_modules"]
+  // "references": [{ "path": "./tsconfig.node.json" }]
 }
