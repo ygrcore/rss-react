@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { PokeApi } from '../../services/PokeApi';
 import Spinner from '../spinner/Spinner';
 
 const PokemonDetails = () => {
-  const { pokemonName } = useParams();
+  // const { pokemonName } = useParams();
+  const pokemonName = 'pikachu';
 
   const { data, isFetching, isLoading } = PokeApi.useGetPokemonQuery(
     pokemonName!

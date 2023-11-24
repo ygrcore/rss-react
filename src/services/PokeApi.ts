@@ -1,9 +1,16 @@
 import { PokemonData, PokemonResponse, PokemonResult } from '../types/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { HYDRATE } from 'next-redux-wrapper';
 
 export const PokeApi = createApi({
   reducerPath: 'PokeApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pokeapi.co/api/v2/' }),
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
+  tagTypes: [],
   endpoints: (build) => ({
     getPreloadedPokemons: build.query<
       PokemonResult[],

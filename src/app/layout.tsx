@@ -1,4 +1,8 @@
 import type { Metadata } from 'next';
+import { Signika } from 'next/font/google';
+import { ReduxProvider } from '../store/provider';
+
+const signika = Signika({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'My Pokemons',
@@ -15,8 +19,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
       </head>
-      <body>
-        <div id="root">{children}</div>
+      <body className={signika.className}>
+        <div id="root">
+          <ReduxProvider>{children}</ReduxProvider>
+        </div>
       </body>
     </html>
   );

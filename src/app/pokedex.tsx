@@ -1,28 +1,29 @@
 'use client';
 import React, { useEffect } from 'react';
 // import { Routes, Route } from 'react-router-dom';
-import ForceError from '../forceError/ForceError';
-import SearchBar from './SearchBar/SearchBar';
-import Pagination from '../Pagination/Pagination';
-import PokemonPerPageSelect from './PokemonPerPageSelect/PokemonPerPageSelect';
-// import PokemonList from './PokemonList/PokemonList';
-// import PokemonDetails from '../PokemonDetails/PokemonDetails';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import ForceError from '../components/forceError/ForceError';
+import SearchBar from '../components/PokeSearchForm/SearchBar/SearchBar';
+import Pagination from '../components/Pagination/Pagination';
+import PokemonPerPageSelect from '../components/PokeSearchForm/PokemonPerPageSelect/PokemonPerPageSelect';
+import PokemonList from '../components/PokeSearchForm/PokemonList/PokemonList';
+import PokemonDetails from '../components/PokemonDetails/PokemonDetails';
+import { useAppSelector, useAppDispatch } from '../hooks/redux';
 import {
   updateSearchResults,
   updateSearchTerm,
   updateItemsPerPage,
   updateCurrentPage,
   updatePokemonList,
-} from '../../store/reducers/pokedexSlice';
-import { PokeApi } from '../../services/PokeApi';
+} from '../store/reducers/pokedexSlice';
+import { PokeApi } from '../services/PokeApi';
 
-import './Pokedex.css';
+// import './Pokedex.css';
 
 const Pokedex: React.FC = () => {
   const { pokemonList, searchResults, itemsPerPage, currentPage } =
     useAppSelector((state) => state.pokedexReducer);
   const dispatch = useAppDispatch();
+
   const { data } = PokeApi.useGetPreloadedPokemonsQuery({
     limit: 150,
     offset: 0,
@@ -70,6 +71,7 @@ const Pokedex: React.FC = () => {
         onPageChange={handlePageChange}
       />
       <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
+      <PokemonList searchResults={searchResults} currentPage={currentPage} />
       {/* <Routes>
         <Route
           path="/"
@@ -83,6 +85,7 @@ const Pokedex: React.FC = () => {
           <Route path=":pokemonName" element={<PokemonDetails />} />
         </Route>
       </Routes> */}
+      <PokemonDetails />
     </div>
   );
 };

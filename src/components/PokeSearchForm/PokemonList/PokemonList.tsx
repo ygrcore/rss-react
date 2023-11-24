@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+// import { Outlet } from 'react-router-dom';
 import { PokemonData, PokemonResult } from '../../../types/types';
-import { stopPropagation } from '../../../utils/eventHandler/stopPropaganation';
+// import { stopPropagation } from '../../../utils/eventHandler/stopPropaganation';
 import Spinner from '../../spinner/Spinner';
 import { PokeApi } from '../../../services/PokeApi';
 import PokemonCard from '../PokemonCard/PokemonCard';
@@ -36,39 +38,44 @@ const PokemonList: React.FC<PokemonListProps> = ({
   }, [data, currentPage, pokemonList, searchResults]);
 
   const fetchPokes = async () => {
+    // await data;
     if (data) {
+      // console.log(data);
       setPokemonPerPage(data);
     }
   };
 
-  const [outletVisible, setOutletVisible] = useState(true);
+  // const [outletVisible, setOutletVisible] = useState(true);
 
-  useEffect(() => {
-    document.addEventListener('click', closeHandle);
+  // useEffect(() => {
+  //   document.addEventListener('click', closeHandle);
 
-    return () => {
-      document.removeEventListener('click', closeHandle);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('click', closeHandle);
+  //   };
+  // }, []);
 
-  const closeHandle: EventListener = (event): void => {
-    const element = event.target as HTMLElement;
-    if (
-      element &&
-      !(
-        element.classList.contains('pokemons__outlet') ||
-        element.classList.contains('card') ||
-        element.classList.contains('card-image') ||
-        element.classList.contains('card-title') ||
-        element.classList.contains('card-subtitle')
-      )
-    ) {
-      setOutletVisible(false);
-    } else {
-      setOutletVisible(true);
-    }
-  };
-  const searchedPokesString = localStorage.getItem('searchedPokes');
+  // const closeHandle: EventListener = (event): void => {
+  //   const element = event.target as HTMLElement;
+  //   if (
+  //     element &&
+  //     !(
+  //       element.classList.contains('pokemons__outlet') ||
+  //       element.classList.contains('card') ||
+  //       element.classList.contains('card-image') ||
+  //       element.classList.contains('card-title') ||
+  //       element.classList.contains('card-subtitle')
+  //     )
+  //   ) {
+  //     setOutletVisible(false);
+  //   } else {
+  //     setOutletVisible(true);
+  //   }
+  // };
+  let searchedPokesString;
+  if (typeof window !== 'undefined') {
+    searchedPokesString = localStorage.getItem('searchedPokes');
+  }
   return (
     <div className="pokemons">
       <div className="pokemons__list">
@@ -100,13 +107,13 @@ const PokemonList: React.FC<PokemonListProps> = ({
         )}
         {isError && <p>Nothing Found</p>}
       </div>
-      <div
+      {/* <div
         className="pokemons__outlet"
         onClick={stopPropagation}
         style={{ display: outletVisible ? 'flex' : 'none' }}
       >
         <Outlet />
-      </div>
+      </div> */}
     </div>
   );
 };

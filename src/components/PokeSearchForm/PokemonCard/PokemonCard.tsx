@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { PokemonData } from '../../../types/types';
 import { getColorForType } from '../../../utils/additional/colorsForTypes';
 
@@ -9,8 +10,12 @@ type PokemonCardProps = {
 
 const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, currentPage }) => {
   return (
-    <Link data-testid="pokemon-card" to={`${pokemon.name}?page=${currentPage}`}>
+    <Link
+      data-testid="pokemon-card"
+      href={`${pokemon.name}?page=${currentPage}`}
+    >
       <li
+        key={pokemon.name}
         className="card"
         style={{
           backgroundColor: pokemon.type

@@ -1,3 +1,5 @@
+'use client';
+
 import { PokemonResult } from '../../types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -10,17 +12,27 @@ interface pokedexState {
   isLoading: boolean;
   error: string;
 }
-const storedSearchResults = localStorage.getItem('searchedPokes');
+
+let storedSearchResults;
+let currPage;
+let initTerm;
+if (typeof window !== 'undefined') {
+  // Perform localStorage action
+  // const item = localStorage.getItem('key')
+  storedSearchResults = localStorage.getItem('searchedPokes');
+  currPage = localStorage.getItem('currentPage');
+  initTerm = localStorage.getItem('term');
+}
 const initialSearchResults = storedSearchResults
   ? JSON.parse(storedSearchResults)
   : [];
-const currPage = localStorage.getItem('currentPage');
-const initialCurrPage = currPage ? localStorage.getItem('term') : '';
+// const currPage = localStorage.getItem('currentPage');
+const initialCurrPage = currPage ? initTerm : '';
 
 const initialState: pokedexState = {
   pokemonList: [],
   searchResults: initialSearchResults,
-  searchTerm: localStorage.getItem('term') || '',
+  searchTerm: initTerm || '',
   itemsPerPage: 10,
   currentPage: initialCurrPage ? +initialCurrPage : 1,
   isLoading: false,

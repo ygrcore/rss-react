@@ -1,7 +1,10 @@
-// 'use client'
+'use client';
 
 // import App from '../../App'
+
+// import SearchBar from '../../components/PokeSearchForm/SearchBar/SearchBar';
 import dynamic from 'next/dynamic';
+
 import '../../index.css';
 
 // export const generateStaticParams = () => [{ main: "page" }];

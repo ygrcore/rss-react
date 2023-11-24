@@ -1,3 +1,5 @@
+'use client';
+
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import pokedexReducer from './reducers/pokedexSlice';
 import { PokeApi } from '../services/PokeApi';
