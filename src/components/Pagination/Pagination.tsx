@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-// import './Pagination.css';
+import styles from './Pagination.module.css';
 
 type PaginationProps = {
   totalPages: number;
@@ -18,12 +18,12 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <>
-      <div className="pagination">
+      <div className={styles.pagination}>
         {pages.map((page) => (
           <Link
             href={`?page=${page}`}
-            className={`pagination__button ${
-              currentPage === page ? 'button-active' : ''
+            className={`${styles.pagination__button} ${
+              currentPage === page ? styles.buttonActive : ''
             }`}
             key={page}
             onClick={() => {

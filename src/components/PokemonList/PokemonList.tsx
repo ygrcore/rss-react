@@ -1,21 +1,25 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { PokemonData, PokemonResult } from '../../../types/types';
-import Spinner from '../../spinner/Spinner';
-import { PokeApi } from '../../../services/PokeApi';
+import { PokemonData, PokemonResult } from '../../types/types';
+import Spinner from '../spinner/Spinner';
+import { PokeApi } from '../../services/PokeApi';
 import PokemonCard from '../PokemonCard/PokemonCard';
-import { useAppSelector } from '../../../hooks/redux';
-// import './PokemonList.css';
+import { useAppSelector } from '../../hooks/redux';
+import type { ReactNode } from 'react';
+
+import styles from './PokemonList.module.css';
 
 type PokemonListProps = {
   searchResults: PokemonResult[];
   currentPage: number;
+  children: ReactNode;
 };
 
 const PokemonList: React.FC<PokemonListProps> = ({
   searchResults,
   currentPage,
+  children,
 }) => {
   const { itemsPerPage, pokemonList } = useAppSelector(
     (state) => state.pokedexReducer
@@ -58,9 +62,9 @@ const PokemonList: React.FC<PokemonListProps> = ({
   //     !(
   //       element.classList.contains('pokemons__outlet') ||
   //       element.classList.contains('card') ||
-  //       element.classList.contains('card-image') ||
-  //       element.classList.contains('card-title') ||
-  //       element.classList.contains('card-subtitle')
+  //       element.classList.contains('cardImage') ||
+  //       element.classList.contains('cardTitle') ||
+  //       element.classList.contains('cardSubtitle')
   //     )
   //   ) {
   //     setOutletVisible(false);
@@ -73,8 +77,8 @@ const PokemonList: React.FC<PokemonListProps> = ({
     searchedPokesString = localStorage.getItem('searchedPokes');
   }
   return (
-    <div className="pokemons">
-      <div className="pokemons__list">
+    <div className={styles.pokemons}>
+      <div className={styles.pokemons__list}>
         {(isLoading || isFetching) && (
           <div
             style={{
@@ -91,7 +95,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
           <p>Nothing Found</p>
         ) : null}
         {isFetching ? null : (
-          <ul id="pokedex">
+          <ul id={styles.pokedex}>
             {pokemonPerPage?.map((pokemon) => (
               <PokemonCard
                 key={pokemon.id}
@@ -103,13 +107,13 @@ const PokemonList: React.FC<PokemonListProps> = ({
         )}
         {isError && <p>Nothing Found</p>}
       </div>
-      {/* <div
-        className="pokemons__outlet"
-        onClick={stopPropagation}
-        style={{ display: outletVisible ? 'flex' : 'none' }}
+
+      <div
+        className={styles.pokemons__outlet}
+        // style={{ display: outletVisible ? 'flex' : 'none' }}
       >
-        <Outlet />
-      </div> */}
+        {children}
+      </div>
     </div>
   );
 };

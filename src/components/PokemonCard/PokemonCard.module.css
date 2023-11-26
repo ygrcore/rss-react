@@ -1,20 +1,3 @@
-#pokedex {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Создать 5 столбцов */
-  gap: 2%;
-  margin-bottom: 5em;
-  padding: 0px 0.5em;
-  @media screen and (max-width: 900px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media screen and (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media screen and (max-width: 450px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
 .card {
   display: flex;
   padding: 2%;
@@ -54,22 +37,10 @@
   color: blue;
 }
 
-.card-title {
+.cardTitle {
   text-transform: capitalize;
 }
 
-.card-subtitle {
+.cardSubtitle {
   text-align: center;
-}
-
-.select-amount {
-  display: flex;
-  gap: 1em;
-  margin: 0 1em;
-}
-
-.select-title {
-  font-weight: bold;
-  text-align: center;
-  color: inherit;
 }

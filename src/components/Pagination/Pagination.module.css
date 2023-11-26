@@ -22,6 +22,6 @@
   transition: border-color 0.25s;
 }
 
-.button-active {
+.buttonActive {
   background-color: #ff7070;
 }

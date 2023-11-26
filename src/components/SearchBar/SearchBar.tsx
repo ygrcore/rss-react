@@ -1,5 +1,5 @@
-import { updateSearchTerm } from '../../../store/reducers/pokedexSlice';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { updateSearchTerm } from '../../store/reducers/pokedexSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
   const dispatch = useAppDispatch();

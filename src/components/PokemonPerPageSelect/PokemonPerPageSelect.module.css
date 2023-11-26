@@ -1,0 +1,11 @@
+.selectAmount {
+  display: flex;
+  gap: 1em;
+  margin: 0 1em;
+}
+
+.selectTitle {
+  font-weight: bold;
+  text-align: center;
+  color: inherit;
+}

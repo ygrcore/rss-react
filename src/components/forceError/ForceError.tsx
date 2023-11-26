@@ -1,5 +1,6 @@
 import { useState } from 'react';
-// import './ForceError.css';
+
+import styles from './ForceError.module.css';
 
 const ForceError = () => {
   const [isError, setIsError] = useState<boolean>(false);
@@ -13,8 +14,8 @@ const ForceError = () => {
   }
 
   return (
-    <div className="error">
-      <button className="error__button" type="button" onClick={onClick}>
+    <div className={styles.error}>
+      <button className={styles.error__button} type="button" onClick={onClick}>
         Throw an error
       </button>
     </div>

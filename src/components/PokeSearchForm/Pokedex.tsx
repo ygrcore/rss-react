@@ -2,9 +2,9 @@
 import React, { useEffect } from 'react';
 // import { Routes, Route } from 'react-router-dom';
 import ForceError from '../forceError/ForceError';
-import SearchBar from './SearchBar/SearchBar';
+import SearchBar from '../SearchBar/SearchBar';
 import Pagination from '../Pagination/Pagination';
-import PokemonPerPageSelect from './PokemonPerPageSelect/PokemonPerPageSelect';
+import PokemonPerPageSelect from '../PokemonPerPageSelect/PokemonPerPageSelect';
 // import PokemonList from './PokemonList/PokemonList';
 // import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';

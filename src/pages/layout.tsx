@@ -2,11 +2,10 @@ import { ReactNode } from 'react';
 import { Signika } from 'next/font/google';
 import Head from 'next/head';
 import ForceError from '../components/forceError/ForceError';
-import SearchBar from '../components/PokeSearchForm/SearchBar/SearchBar';
-import PokemonPerPageSelect from '../components/PokeSearchForm/PokemonPerPageSelect/PokemonPerPageSelect';
-import PokemonList from '../components/PokeSearchForm/PokemonList/PokemonList';
+import SearchBar from '../components/SearchBar/SearchBar';
+import PokemonPerPageSelect from '../components/PokemonPerPageSelect/PokemonPerPageSelect';
+import PokemonList from '../components/PokemonList/PokemonList';
 import Pagination from '../components/Pagination/Pagination';
-import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { useEffect } from 'react';
 import {
@@ -17,6 +16,7 @@ import {
   updatePokemonList,
 } from '../store/reducers/pokedexSlice';
 import { PokemonResult } from '../types/types';
+import PokemonDetails from '../components/PokemonDetails/PokemonDetails';
 
 const signika = Signika({ subsets: ['latin'] });
 
@@ -32,30 +32,6 @@ const Layout = ({ children, data }: LayoutProps) => {
   useEffect(() => {
     if (data) dispatch(updatePokemonList(data));
   }, [data]);
-
-  const router = useRouter();
-  const { page, limit, pokemonName } = router.query;
-  const href = pokemonName
-    ? {
-        pathname: '/',
-        query: {
-          page: page || '1',
-          limit: limit || '10',
-          pokemonName: pokemonName || '',
-        },
-      }
-    : {
-        pathname: '/',
-        query: {
-          page: page || '1',
-          limit: limit || '10',
-        },
-      };
-  const redirectToMain = () => {
-    if (router.pathname === '/details/[id]') {
-      router.push(href);
-    }
-  };
 
   const handleSearch = (term: string) => {
     dispatch(updateSearchTerm(term));
@@ -102,10 +78,9 @@ const Layout = ({ children, data }: LayoutProps) => {
             onPageChange={handlePageChange}
           />
           <PokemonPerPageSelect onChange={handleItemsPerPageChange} />
-          <PokemonList
-            searchResults={searchResults}
-            currentPage={currentPage}
-          />
+          <PokemonList searchResults={searchResults} currentPage={currentPage}>
+            <PokemonDetails />
+          </PokemonList>
         </div>
         {children}
       </main>

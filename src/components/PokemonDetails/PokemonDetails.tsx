@@ -1,10 +1,12 @@
-// import { useParams } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { PokeApi } from '../../services/PokeApi';
 import Spinner from '../spinner/Spinner';
 
 const PokemonDetails = () => {
-  // const { pokemonName } = useParams();
-  const pokemonName = 'pikachu';
+  const router = useRouter();
+  const { page } = router.query;
+  const parts = page?.toString().split('/');
+  const pokemonName = Array.isArray(parts) ? parts[1] : parts;
 
   const { data, isFetching, isLoading } = PokeApi.useGetPokemonQuery(
     pokemonName!

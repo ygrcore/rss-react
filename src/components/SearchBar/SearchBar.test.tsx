@@ -2,10 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SearchBar from './SearchBar';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import { setupStore } from '../../../store/store';
+import { setupStore } from '../../store/store';
 import { Provider } from 'react-redux';
 import type { ReactNode } from 'react';
-import { updateSearchTerm } from '../../../store/reducers/pokedexSlice';
+import { updateSearchTerm } from '../../store/reducers/pokedexSlice';
 
 console.error = jest.fn();
 const store = setupStore();

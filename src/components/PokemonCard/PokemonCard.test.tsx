@@ -6,13 +6,13 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import PokemonCard from './PokemonCard';
-import { PokemonData } from '../../../types/types';
+import { PokemonData } from '../../types/types';
 import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import PokemonList from '../PokemonList/PokemonList';
 
-import { setupStore } from '../../../store/store';
+import { setupStore } from '../../store/store';
 import { Provider } from 'react-redux';
 import type { ReactNode } from 'react';
 
