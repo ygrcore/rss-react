@@ -8,12 +8,13 @@
   transition: all 0.2s ease;
   font-weight: 600;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .error__button:hover {
-  background-color: #ff7070;
+  background-color: #d32f2f;
   box-shadow:
-    0 0 0.2em #ff7070,
-    0 0 10px #ff7070,
-    0 0 0.2em #ff7070;
+    0 0 0.2em #d32f2f,
+    0 0 10px #d32f2f,
+    0 0 0.2em #d32f2f;
 }

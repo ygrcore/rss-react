@@ -19,7 +19,12 @@
   font-family: inherit;
   background-color: #f9f9f9;
   cursor: pointer;
-  transition: border-color 0.25s;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.pagination__button:hover {
+  background-color: #d32f2f;
 }
 
 .buttonActive {

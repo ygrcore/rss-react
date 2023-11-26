@@ -13,7 +13,7 @@
   background-color: palegreen;
   cursor: pointer;
   min-height: 250px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
@@ -21,7 +21,11 @@
 }
 
 .card img {
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
+}
+
+.cardLink {
+  text-decoration: none;
 }
 
 .card:hover img {
@@ -31,7 +35,7 @@
 .card a {
   text-align: center;
   color: inherit;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 .card a:hover {
   color: blue;

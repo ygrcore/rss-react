@@ -12,6 +12,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, currentPage }) => {
   return (
     <Link
       data-testid="pokemon-card"
+      className={styles.cardLink}
       href={`?page=${currentPage}/${pokemon.name}`}
     >
       <li
