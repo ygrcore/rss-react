@@ -1,22 +1,18 @@
-import { Component } from 'react';
-import img from "../errorMessage/error.gif";
+import Image from 'next/image';
+import errorImg from '../errorMessage/error.gif';
 
-class ErrorMessage extends Component {
-  render() {
-    return (
-      <img
-        style={{
-          display: "block",
-          width: "250px",
-          height: "250px",
-          objectFit: "contain",
-          margin: "0 auto",
-        }}
-        src={img}
+const ErrorMessage = () => {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <Image
+        src={errorImg}
         alt="Error"
+        width={250}
+        height={250}
+        objectFit="contain"
       />
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default ErrorMessage;

@@ -1,34 +1,25 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-class ForceError extends Component {
-  forceError = () => {
-    try {
-      localStorage.setItem('searchedPokes', 'error');
-      throw new Error("This is a simulated error");
-    } catch (err) {
-      console.log('An error occurred');
-      window.location.reload();
-    }
+import styles from './ForceError.module.css';
+
+const ForceError = () => {
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const onClick = () => {
+    setIsError(true);
+  };
+
+  if (isError) {
+    throw new Error('Error boundary test');
   }
 
-  repairError = () => {
-    try {
-      localStorage.setItem('searchedPokes', '');
-      window.location.reload();
-    } catch (err) {
-      console.log('An error occurred after repair');
-      window.location.reload();
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <button onClick={this.repairError}>Repair Error</button>
-        <button onClick={this.forceError}>Force Error</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.error}>
+      <button className={styles.error__button} type="button" onClick={onClick}>
+        Throw an error
+      </button>
+    </div>
+  );
+};
 
 export default ForceError;
