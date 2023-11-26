@@ -63,3 +63,12 @@ const transformData = (pokemon: PokemonResponse) => {
     id: pokemon.id,
   };
 };
+
+export const {
+  useGetPreloadedPokemonsQuery,
+  useGetUrlsFromPreloadedPokesQuery,
+  useGetPokemonQuery,
+} = PokeApi;
+
+export const { getPreloadedPokemons, getUrlsFromPreloadedPokes, getPokemon } =
+  PokeApi.endpoints;

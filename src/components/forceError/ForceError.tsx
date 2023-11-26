@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './ForceError.css';
+// import './ForceError.css';
 
 const ForceError = () => {
   const [isError, setIsError] = useState<boolean>(false);

@@ -19,7 +19,11 @@
     "jsx": "preserve",
     "noImplicitAny": true,
     "types": ["@testing-library/jest-dom"],
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "src",
@@ -28,7 +32,8 @@
     "jest.config.cjs",
     "jest.setup.ts",
     "./dist/types/**/*.ts",
-    "./next-env.d.ts"
+    "./next-env.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["./node_modules"]
   // "references": [{ "path": "./tsconfig.node.json" }]

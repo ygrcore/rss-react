@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-// import { Outlet } from 'react-router-dom';
 import { PokemonData, PokemonResult } from '../../../types/types';
-// import { stopPropagation } from '../../../utils/eventHandler/stopPropaganation';
 import Spinner from '../../spinner/Spinner';
 import { PokeApi } from '../../../services/PokeApi';
 import PokemonCard from '../PokemonCard/PokemonCard';
-import './PokemonList.css';
 import { useAppSelector } from '../../../hooks/redux';
+// import './PokemonList.css';
 
 type PokemonListProps = {
   searchResults: PokemonResult[];
@@ -38,9 +36,7 @@ const PokemonList: React.FC<PokemonListProps> = ({
   }, [data, currentPage, pokemonList, searchResults]);
 
   const fetchPokes = async () => {
-    // await data;
     if (data) {
-      // console.log(data);
       setPokemonPerPage(data);
     }
   };

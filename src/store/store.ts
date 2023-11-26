@@ -3,6 +3,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import pokedexReducer from './reducers/pokedexSlice';
 import { PokeApi } from '../services/PokeApi';
+import { MakeStore, createWrapper } from 'next-redux-wrapper';
 
 const rootReducer = combineReducers({
   pokedexReducer,
@@ -17,6 +18,9 @@ export const setupStore = () => {
   });
 };
 
+const makeStore: MakeStore<AppStore> = () => setupStore();
+
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });
