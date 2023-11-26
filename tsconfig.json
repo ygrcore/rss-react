@@ -33,7 +33,8 @@
     "jest.setup.ts",
     "./dist/types/**/*.ts",
     "./next-env.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/*.ts"
   ],
   "exclude": ["./node_modules"]
   // "references": [{ "path": "./tsconfig.node.json" }]

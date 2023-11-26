@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SearchBar from './SearchBar';
-import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { setupStore } from '../../store/store';
 import { Provider } from 'react-redux';
@@ -17,11 +16,9 @@ function Wrapper(props: { children: ReactNode }) {
 describe('SearchBar', () => {
   test('input should be empty initially', () => {
     render(
-      <BrowserRouter>
-        <Wrapper>
-          <SearchBar onSearch={jest.fn()} />
-        </Wrapper>
-      </BrowserRouter>
+      <Wrapper>
+        <SearchBar onSearch={jest.fn()} />
+      </Wrapper>
     );
     const textInput = screen.getByTestId('input-text');
     expect(textInput).toHaveValue('');
@@ -32,11 +29,9 @@ describe('SearchBar', () => {
     store.dispatch(updateSearchTerm(newSearchTerm));
 
     render(
-      <BrowserRouter>
-        <Wrapper>
-          <SearchBar onSearch={jest.fn()} />
-        </Wrapper>
-      </BrowserRouter>
+      <Wrapper>
+        <SearchBar onSearch={jest.fn()} />
+      </Wrapper>
     );
 
     const input = screen.getByTestId('input-text');
@@ -76,11 +71,9 @@ describe('SearchBar', () => {
   test('Check that the component retrieves the value from the local storage upon mounting', () => {
     localStorage.setItem('inputValue', JSON.stringify('bulbasaur'));
     render(
-      <BrowserRouter>
-        <Wrapper>
-          <SearchBar onSearch={jest.fn()} />
-        </Wrapper>
-      </BrowserRouter>
+      <Wrapper>
+        <SearchBar onSearch={jest.fn()} />
+      </Wrapper>
     );
 
     const inputElement = screen.getByTestId('input-text') as HTMLInputElement;

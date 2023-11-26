@@ -6,7 +6,7 @@ const Page404: React.FC = () => {
     <div>
       <ErrorMessage />
       <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>
-        Page doesn't exist
+        Page doesn&apos;t exist
       </p>
       <Link
         style={{

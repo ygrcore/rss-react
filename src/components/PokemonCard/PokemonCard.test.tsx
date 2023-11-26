@@ -7,7 +7,6 @@ import {
 } from '@testing-library/react';
 import PokemonCard from './PokemonCard';
 import { PokemonData } from '../../types/types';
-import { BrowserRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import PokemonList from '../PokemonList/PokemonList';
@@ -31,6 +30,7 @@ describe('PokemonCard', () => {
       },
     ],
     currentPage: 1,
+    children: null,
   };
 
   const mockPokemonData: PokemonData = {
@@ -42,11 +42,9 @@ describe('PokemonCard', () => {
 
   test('Ensure that the card component renders the relevant card data', () => {
     const { getByText, getByAltText } = render(
-      <BrowserRouter>
-        <Wrapper>
-          <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-        </Wrapper>
-      </BrowserRouter>
+      <Wrapper>
+        <PokemonCard pokemon={mockPokemonData} currentPage={1} />
+      </Wrapper>
     );
 
     expect(getByText('bulbasaur')).toBeInTheDocument();
@@ -57,17 +55,15 @@ describe('PokemonCard', () => {
   it('opens a detailed card component by clicking on card', async () => {
     await act(async () => {
       render(
-        <BrowserRouter>
-          <Wrapper>
-            <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-          </Wrapper>
-        </BrowserRouter>
+        <Wrapper>
+          <PokemonCard pokemon={mockPokemonData} currentPage={1} />
+        </Wrapper>
       );
     });
 
     userEvent.click(screen.getByRole('listitem'));
     expect(screen.getByRole('link').getAttribute('href')).toBe(
-      '/bulbasaur?page=1'
+      '?page=1/bulbasaur'
     );
   });
 
@@ -79,12 +75,10 @@ describe('PokemonCard', () => {
       })
     );
     render(
-      <BrowserRouter>
-        <Wrapper>
-          <PokemonList {...props} />
-          <PokemonCard pokemon={mockPokemonData} currentPage={1} />
-        </Wrapper>
-      </BrowserRouter>
+      <Wrapper>
+        <PokemonList {...props} />
+        <PokemonCard pokemon={mockPokemonData} currentPage={1} />
+      </Wrapper>
     );
     await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const cardsElements = await screen.findAllByTestId('pokemon-card');
